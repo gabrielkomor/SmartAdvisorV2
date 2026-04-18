@@ -16,8 +16,8 @@ const App = (): JSX.Element => {
         <Route path="/" element={<Layout />}>
           <Route path="downloadData" element={<DownloadData />} />
           <Route path="candleChart" element={<CandleChart />} />
-          <Route path="signalsHisotry" element={<SignalsHistory />} />
-          <Route path="hisotryDecisions" element={<HistoryDecisions />} />
+          <Route path="signalsHistory" element={<SignalsHistory />} />
+          <Route path="historyDecisions" element={<HistoryDecisions />} />
           <Route path="linearDecisions" element={<LinearDecisions />} />
         </Route>
       </Routes>
