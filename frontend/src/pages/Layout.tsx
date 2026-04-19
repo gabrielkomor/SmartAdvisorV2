@@ -72,9 +72,9 @@ const Layout = (): JSX.Element => {
                   <NavLink
                     to={item.path}
                     className={({ isActive }) => `
-  flex w-full rounded-2xl mt-2 h-13 items-center gap-2 px-3
+  flex w-full rounded-2xl mt-2 h-20 items-center gap-2 px-3
   transition-all duration-200 ease-out
-  active:scale-90
+  active:scale-90 font-medium text-lg tracking-wide justify-center
   ${
     isActive
       ? "bg-secondary/50 text-primary-content hover:bg-secondary/70 hover:text-black"
