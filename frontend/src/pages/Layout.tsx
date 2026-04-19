@@ -48,7 +48,7 @@ const Layout = (): JSX.Element => {
       divider: true,
     },
     {
-      name: "Exit",
+      name: "Exit Application",
       path: "/",
       icon: LogOut,
       divider: false,
@@ -71,13 +71,22 @@ const Layout = (): JSX.Element => {
                 <li key={item.name} className="w-full">
                   <NavLink
                     to={item.path}
-                    className="flex w-full bg-primary text-primary-content rounded-2xl mt-2 h-13 items-center gap-2 px-3"
+                    className={({ isActive }) => `
+  flex w-full rounded-2xl mt-2 h-13 items-center gap-2 px-3
+  transition-all duration-200 ease-out
+  active:scale-90
+  ${
+    isActive
+      ? "bg-secondary/50 text-primary-content hover:bg-secondary/70 hover:text-black"
+      : "bg-primary text-primary-content hover:bg-secondary/50 hover:text-black"
+  }
+`}
                   >
                     <Icon className="w-6 h-6" />
                     <span>{item.name}</span>
                   </NavLink>
                   {item.divider ? (
-                    <div className="divider divider-start"></div>
+                    <div className="divider divider-start pointer-events-none"></div>
                   ) : (
                     <></>
                   )}
