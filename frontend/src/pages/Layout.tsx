@@ -133,7 +133,7 @@ const Layout = (): JSX.Element => {
               min-h-0 overflow-auto
             "
           >
-            Right panel content
+            Right panel
           </aside>
         </div>
       </div>
