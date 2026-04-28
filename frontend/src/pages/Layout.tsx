@@ -47,23 +47,33 @@ const Layout = (): JSX.Element => {
       icon: LineChart,
       divider: true,
     },
-    {
-      name: "Exit Application",
-      path: "/",
-      icon: LogOut,
-      divider: false,
-    },
+    { name: "Exit Application", path: "/", icon: LogOut, divider: false },
   ];
 
   return (
     <div className="flex flex-col h-screen">
-      <aside className="w-100% h-[10%] bg-primary rounded-3xl shadow-xl mt-2 ml-2 mr-2 flex items-center justify-center">
-        <span className="text-center font-bold text-3xl">Smart Advisor V2</span>
+      {/* HEADER */}
+      <aside className="h-16 sm:h-20 bg-primary rounded-3xl shadow-xl mt-2 mx-2 flex items-center justify-center">
+        <span className="font-bold text-lg sm:text-2xl lg:text-3xl">
+          Smart Advisor V2
+        </span>
       </aside>
 
-      <div className="flex overflow-hidden h-full">
-        <aside className="w-[13%] bg-base-300 p-2 rounded-3xl ml-2 mt-2 mb-2 shadow-xl flex justify-center items-center">
-          <ul className="menu text-base-content w-full">
+      {/* BODY */}
+      <div className="flex flex-1 min-h-0 flex-row gap-2 p-2 relative">
+        {/* SIDEBAR */}
+        <aside
+          className="
+    sticky top-0
+    h-full
+    w-20 sm:w-56 lg:w-64
+    bg-base-300 p-2 rounded-3xl shadow-xl
+    flex flex-col
+    justify-center
+    overflow-y-auto
+  "
+        >
+          <ul className="menu w-full flex flex-col gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
 
@@ -72,23 +82,24 @@ const Layout = (): JSX.Element => {
                   <NavLink
                     to={item.path}
                     className={({ isActive }) => `
-  flex w-full rounded-2xl mt-2 h-20 items-center gap-2 px-3
-  transition-all duration-200 ease-out
-  active:scale-90 font-medium text-lg tracking-wide justify-center
-  ${
-    isActive
-      ? "bg-secondary/50 text-primary-content hover:bg-secondary/70 hover:text-black"
-      : "bg-primary text-primary-content hover:bg-secondary/50 hover:text-black"
-  }
-`}
+                      flex w-full rounded-2xl mt-2 items-center gap-3 px-3 py-3
+                      transition-all duration-200 ease-out
+                      active:scale-95 font-medium
+                      text-sm lg:text-base
+                      justify-center lg:justify-start
+                      ${
+                        isActive
+                          ? "bg-secondary/50 text-primary-content"
+                          : "bg-primary text-primary-content hover:bg-secondary/50"
+                      }
+                    `}
                   >
-                    <Icon className="w-6 h-6" />
-                    <span>{item.name}</span>
+                    <Icon className="w-6 h-6 shrink-0" />
+                    <span className="hidden lg:inline">{item.name}</span>
                   </NavLink>
-                  {item.divider ? (
+
+                  {item.divider && (
                     <div className="divider divider-start pointer-events-none"></div>
-                  ) : (
-                    <></>
                   )}
                 </li>
               );
@@ -96,15 +107,35 @@ const Layout = (): JSX.Element => {
           </ul>
         </aside>
 
-        <div className="flex flex-col w-[73%] mt-2 ml-2 mr-2">
-          <main className="h-[90%] overflow-hidden p-8 bg-base-300 rounded-3xl shadow-xl">
-            <Outlet />
-          </main>
+        {/* CONTENT */}
+        <div className="flex flex-1 flex-col lg:flex-row min-h-0 gap-2">
+          {/* MAIN */}
+          <div className="flex flex-col flex-1 min-h-0">
+            <main
+              className="
+                flex-1 min-h-0
+                p-4 sm:p-6 lg:p-8
+                bg-base-300 rounded-3xl shadow-xl
+                overflow-auto
+              "
+            >
+              <Outlet />
+            </main>
 
-          <div className="h-[10%] bg-base-300 p-2 rounded-3xl mt-2 mb-2 shadow-xl"></div>
+            <div className="h-16 bg-base-300 p-2 rounded-3xl mt-2 shadow-xl"></div>
+          </div>
+
+          {/* RIGHT PANEL */}
+          <aside
+            className="
+              w-full lg:w-64
+              bg-base-300 p-4 rounded-3xl shadow-xl
+              min-h-0 overflow-auto
+            "
+          >
+            Right panel content
+          </aside>
         </div>
-
-        <aside className="w-[13%] bg-base-300 p-2 rounded-3xl mt-2 mb-2 mr-2 shadow-xl"></aside>
       </div>
     </div>
   );
