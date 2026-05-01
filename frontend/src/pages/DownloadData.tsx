@@ -1,6 +1,11 @@
-import type { JSX } from "react";
+import { useState, type JSX } from "react";
 
 const DownloadData = (): JSX.Element => {
+  const minSliderValue = 1;
+  const maxSliderValue = 100;
+  const [timeDelta, setTimeDelta] = useState(50);
+  const [timeBackward, setTimeBackward] = useState(50);
+
   return (
     <div>
       {/* RADIO BUTTONS */}
@@ -60,6 +65,55 @@ const DownloadData = (): JSX.Element => {
       <div className="divider"></div>
 
       {/* SLIDER */}
+      <div className="flex flex-row w-full mt-4">
+        <div className="flex flex-col w-1/2 justify-center items-center">
+          <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
+            Time Delta:
+          </span>
+          <input
+            type="range"
+            min={minSliderValue}
+            max={maxSliderValue}
+            value={timeDelta}
+            onChange={(event) => setTimeDelta(Number(event.target.value))}
+            className="range range-primary w-3/4 mt-5 sm:range-md lg:range-xl"
+          />
+          <div className="flex w-3/4 justify-between mt-2 sm:text-sm md:text-base lg:text-lg font-semibold">
+            <span>{minSliderValue}</span>
+            <span>
+              {timeDelta} {timeDelta === 1 ? "day" : "days"}
+            </span>
+            <span>{maxSliderValue}</span>
+          </div>
+        </div>
+
+        <div className="divider divider-horizontal"></div>
+
+        <div className="flex flex-col w-1/2 justify-center items-center">
+          <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
+            Time Backward:
+          </span>
+          <input
+            type="range"
+            min={minSliderValue}
+            max={maxSliderValue}
+            value={timeBackward}
+            onChange={(event) => setTimeBackward(Number(event.target.value))}
+            className="range range-primary w-3/4 mt-5 sm:range-md lg:range-xl"
+          />
+          <div className="flex w-3/4 justify-between mt-2 sm:text-sm md:text-base lg:text-lg font-semibold">
+            <span>{minSliderValue}</span>
+            <span>
+              {timeBackward} {timeBackward === 1 ? "day" : "days"}
+            </span>
+            <span>{maxSliderValue}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* BUTTON */}
     </div>
   );
 };
