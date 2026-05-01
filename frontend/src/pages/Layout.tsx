@@ -152,16 +152,20 @@ const Layout = (): JSX.Element => {
             className="
               w-full lg:w-64
               bg-base-300 p-4 rounded-3xl shadow-xl
-              min-h-0 overflow-auto flex flex-col justify-center
+              min-h-0 max-h-32 sm:max-h-40 lg:max-h-none
+              overflow-y-auto overflow-x-hidden
+              flex flex-col justify-center
             "
           >
-            <ul className="flex flex-col w-full">
+            <ul className="flex w-full flex-row flex-wrap gap-2 lg:flex-col lg:flex-nowrap lg:gap-0">
               {indicators.map(({ name, value }) => (
-                <li className="mt-4 w-full">
-                  <div className="flex w-full items-center justify-between p-3">
-                    <span className="font-bold text-2xl">{name}</span>
+                <li className="w-full sm:w-[calc(50%-0.25rem)] lg:w-full lg:mt-4">
+                  <div className="flex w-full items-center justify-between sm:pd-1 md:p-2 lg:p-3">
+                    <span className="font-bold sm:text-sm md:test-xl lg:text-2xl">
+                      {name}
+                    </span>
                     <button
-                      className={`btn btn-active text-xl font-bold cursor-default w-1/2 h-16 shadow-xl ${decisionColor(value)}`}
+                      className={`btn btn-active sm:text-xs md:test-sm lg:text-xl font-bold cursor-default w-1/2 sm:h-8 md:h-12 lg:h-16 shadow-xl ${decisionColor(value)}`}
                     >
                       {value}
                     </button>
