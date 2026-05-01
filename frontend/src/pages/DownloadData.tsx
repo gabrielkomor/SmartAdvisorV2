@@ -10,7 +10,7 @@ const DownloadData = (): JSX.Element => {
     <div>
       {/* RADIO BUTTONS */}
       <div className="flex items-center justify-center mt-6">
-        <div className="join w-4/5 gap-px overflow-hidden rounded-3xl">
+        <div className="join w-4/5 gap-px overflow-hidden rounded-3xl shadow-2xs">
           <input
             className="join-item btn flex-1 text-lg sm:text-xl border-r border-base-300"
             type="radio"
@@ -41,7 +41,7 @@ const DownloadData = (): JSX.Element => {
           <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
             Symbol:
           </span>
-          <select className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4">
+          <select className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4 shadow-2xs">
             <option className="font-bold">NVDA</option>
             <option className="font-bold">AMD</option>
             <option className="font-bold">INTC</option>
@@ -54,7 +54,7 @@ const DownloadData = (): JSX.Element => {
           <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
             Time Frame:
           </span>
-          <select className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4">
+          <select className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4 shadow-2xs">
             <option className="font-bold">1 M</option>
             <option className="font-bold">1 H</option>
             <option className="font-bold">1 D</option>
@@ -114,6 +114,18 @@ const DownloadData = (): JSX.Element => {
       <div className="divider"></div>
 
       {/* BUTTON */}
+      <div className="flex justify-center">
+        <button
+          className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 items-center justify-center
+                      transition-all duration-200 
+                      active:scale-95 font-medium
+                      bg-primary text-primary-content hover:bg-secondary/50
+                      text-align-center shadow-xl
+                      text-sm sm:text-base md:text-lg lg:text-xl"
+        >
+          Download Data
+        </button>
+      </div>
     </div>
   );
 };
