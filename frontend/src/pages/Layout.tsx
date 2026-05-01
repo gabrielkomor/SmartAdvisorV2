@@ -86,7 +86,7 @@ const Layout = (): JSX.Element => {
                       transition-all duration-200 ease-out
                       active:scale-95 font-medium
                       text-sm lg:text-base
-                      justify-center lg:justify-start
+                      justify-center lg:justify-start shadow-xl
                       ${
                         isActive
                           ? "bg-secondary/50 text-primary-content"
