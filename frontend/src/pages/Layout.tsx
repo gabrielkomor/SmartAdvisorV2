@@ -50,11 +50,33 @@ const Layout = (): JSX.Element => {
     { name: "Exit Application", path: "/", icon: LogOut, divider: false },
   ];
 
+  const indicators: Array<{ name: string; value: Decision }> = [
+    { name: "SMA", value: "BUY" },
+    { name: "RSI", value: "HOLD" },
+    { name: "BB", value: "HOLD" },
+    { name: "MACD", value: "HOLD" },
+    { name: "ADX", value: "BUY" },
+    { name: "Volume", value: "SELL" },
+  ];
+
+  type Decision = "BUY" | "SELL" | "HOLD";
+
+  const decisionColor = (value: Decision) => {
+    switch (value) {
+      case "BUY":
+        return "btn-success text-white";
+      case "SELL":
+        return "btn-error text-white";
+      case "HOLD":
+        return "btn-warning text-black";
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {/* HEADER */}
       <aside className="h-16 sm:h-20 bg-primary rounded-3xl shadow-xl mt-2 mx-2 flex items-center justify-center">
-        <span className="font-bold text-lg sm:text-2xl lg:text-3xl">
+        <span className="font-bold text-lg sm:text-2xl lg:text-3xl text-primary-content">
           Smart Advisor V2
         </span>
       </aside>
@@ -130,10 +152,23 @@ const Layout = (): JSX.Element => {
             className="
               w-full lg:w-64
               bg-base-300 p-4 rounded-3xl shadow-xl
-              min-h-0 overflow-auto
+              min-h-0 overflow-auto flex flex-col justify-center
             "
           >
-            Right panel
+            <ul className="flex flex-col w-full">
+              {indicators.map(({ name, value }) => (
+                <li className="mt-4 w-full">
+                  <div className="flex w-full items-center justify-between p-3">
+                    <span className="font-bold text-2xl">{name}</span>
+                    <button
+                      className={`btn btn-active text-xl font-bold cursor-default w-1/2 h-16 shadow-xl ${decisionColor(value)}`}
+                    >
+                      {value}
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </aside>
         </div>
       </div>
