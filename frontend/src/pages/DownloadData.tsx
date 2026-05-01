@@ -121,7 +121,7 @@ const DownloadData = (): JSX.Element => {
                       active:scale-95 font-medium
                       bg-primary text-primary-content hover:bg-secondary/50
                       text-align-center shadow-xl
-                      text-sm sm:text-base md:text-lg lg:text-xl"
+                      text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer"
         >
           Download Data
         </button>
