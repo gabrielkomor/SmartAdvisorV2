@@ -110,7 +110,7 @@ const Layout = (): JSX.Element => {
                   <NavLink
                     to={item.path}
                     className={({ isActive }) => `
-                      flex w-full rounded-2xl mt-2 items-center gap-3 px-3 py-3
+                      flex w-full rounded-2xl mt-2 items-center gap-3 px-3 py-3 lg:h-14.5
                       transition-all duration-200 ease-out
                       active:scale-95 font-medium
                       text-sm lg:text-base
@@ -151,18 +151,22 @@ const Layout = (): JSX.Element => {
             </main>
 
             {/* BOTTOM PANEL */}
-            <div className="h-28 bg-base-300 p-2 rounded-3xl mt-2 shadow-xl overflow-x-auto overflow-y-hidden">
-              <ul className="flex h-full min-w-max items-center gap-2 sm:gap-3 lg:gap-4 px-1 sm:px-2">
+            <div className="flex h-28 w-full items-center bg-base-300 p-2 md:p-1 lg:p-1 rounded-3xl mt-2 shadow-xl overflow-hidden">
+              <ul className="grid h-full w-full grid-cols-3 gap-2 sm:gap-3 lg:gap-4 sm:pd-1 md:p-2 lg:p-3">
                 {summary.map(({ name, value }) => (
                   <li
                     key={name}
-                    className="flex items-center gap-2 sm:gap-3 rounded-2xl bg-base-200 px-3 py-2 shadow-2xs"
+                    className="flex w-full flex-col items-center gap-2 rounded-2xl bg-base-200 px-3 py-3 shadow-2xs sm:flex-row sm:gap-0"
                   >
-                    <span className="font-semibold text-sm sm:text-base lg:text-lg">
+                    <span className="w-full text-center font-semibold text-sm sm:flex-1 sm:text-base lg:text-lg">
                       {name}
                     </span>
                     <button
-                      className={`btn btn-active btn-xs sm:btn-sm cursor-default ${decisionColor(value)}`}
+                      className={`btn w-full rounded-2xl shrink-0 btn-active
+                        sm:w-1/2 text-xs sm:text-sm cursor-default shadow-xl
+                        h-10! sm:h-12! md:h-14! lg:h-15!
+                        min-h-10! sm:min-h-12! md:min-h-14! lg:min-h-15!
+                        ${decisionColor(value)}`}
                     >
                       {value}
                     </button>
