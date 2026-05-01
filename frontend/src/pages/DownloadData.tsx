@@ -7,9 +7,9 @@ const DownloadData = (): JSX.Element => {
   const [timeBackward, setTimeBackward] = useState(50);
 
   return (
-    <div>
+    <div className="min-h-full flex flex-col justify-center">
       {/* RADIO BUTTONS */}
-      <div className="flex items-center justify-center mt-6">
+      <div className="flex items-center justify-center mt-6 mb-4">
         <div className="join w-4/5 gap-px overflow-hidden rounded-3xl shadow-2xs">
           <input
             className="join-item btn flex-1 text-lg sm:text-xl border-r border-base-300"
