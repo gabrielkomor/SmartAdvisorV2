@@ -1,55 +1,6 @@
 import type { JSX } from "react";
 import { NavLink } from "react-router-dom";
-import {
-  CloudDownload,
-  BarChart3,
-  Signal,
-  History,
-  LineChart,
-  LogOut,
-  type LucideIcon,
-} from "lucide-react";
-
-type NavItems = Array<{
-  name: string;
-  path: string;
-  icon: LucideIcon;
-  divider: boolean;
-}>;
-
-const navItems: NavItems = [
-  {
-    name: "Download Data",
-    path: "/downloadData",
-    icon: CloudDownload,
-    divider: true,
-  },
-  {
-    name: "Candle Chart",
-    path: "/candleChart",
-    icon: BarChart3,
-    divider: true,
-  },
-  {
-    name: "Signals History",
-    path: "/signalsHistory",
-    icon: Signal,
-    divider: true,
-  },
-  {
-    name: "History Decisions",
-    path: "/historyDecisions",
-    icon: History,
-    divider: true,
-  },
-  {
-    name: "Linear Decisions",
-    path: "/linearDecisions",
-    icon: LineChart,
-    divider: true,
-  },
-  { name: "Exit Application", path: "/", icon: LogOut, divider: false },
-];
+import { navItems } from "./layoutDecision";
 
 const LayoutSidebar = (): JSX.Element => {
   return (
@@ -77,7 +28,7 @@ overflow-y-auto
                 transition-all duration-200 ease-out
                 active:scale-95 font-medium
                 text-sm lg:text-base
-                justify-center lg:justify-start shadow-xl
+                justify-center shadow-xl
                 ${
                   isActive
                     ? "bg-secondary/50 text-primary-content"
