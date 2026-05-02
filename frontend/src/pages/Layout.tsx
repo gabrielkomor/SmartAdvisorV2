@@ -158,12 +158,12 @@ const Layout = (): JSX.Element => {
                     key={name}
                     className="flex w-full flex-col items-center gap-2 rounded-2xl bg-base-200 px-3 py-3 shadow-2xs sm:flex-row sm:gap-0"
                   >
-                    <span className="w-full text-center font-semibold text-sm sm:flex-1 sm:text-base lg:text-lg">
+                    <span className="w-full text-center font-semibold text-sm sm:flex-1 sm:text-base lg:text-xl">
                       {name}
                     </span>
                     <button
                       className={`btn w-full rounded-2xl shrink-0 btn-active
-                        sm:w-1/2 text-xs sm:text-sm cursor-default shadow-xl
+                        sm:w-1/2 font-bold lg:text-xl md:text-lg sm:text-sm cursor-default shadow-xl
                         h-10! sm:h-12! md:h-14! lg:h-15!
                         min-h-10! sm:min-h-12! md:min-h-14! lg:min-h-15!
                         ${decisionColor(value)}`}
