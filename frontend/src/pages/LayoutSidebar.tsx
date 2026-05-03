@@ -8,8 +8,8 @@ const LayoutSidebar = (): JSX.Element => {
       className="
 sticky top-0
 h-full
-w-20 sm:w-56 lg:w-64
-bg-base-300 p-2 rounded-3xl shadow-xl
+w-14 sm:w-56 lg:w-64
+bg-base-300 sm:p-2 lg:p-2 rounded-3xl shadow-xl
 flex flex-col
 justify-center
 overflow-y-auto

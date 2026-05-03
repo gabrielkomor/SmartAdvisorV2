@@ -14,7 +14,10 @@ const LayoutRightIndicators = (): JSX.Element => {
     >
       <ul className="flex w-full flex-row flex-wrap content-start gap-2 lg:flex-col lg:flex-nowrap lg:gap-0">
         {indicators.map(({ name, value }) => (
-          <li className="w-full sm:w-[calc(50%-0.25rem)] lg:w-full lg:mt-4 rounded-2xl bg-base-200 shadow-2xs p-1">
+          <li
+            key={name}
+            className="w-full sm:w-[calc(50%-0.25rem)] lg:w-full lg:mt-4 rounded-2xl bg-base-200 shadow-2xs p-1"
+          >
             <div className="flex w-full items-center gap-2 sm:p-2 md:p-2.5 lg:p-3">
               <span className="flex-1 text-center font-bold sm:text-sm md:text-xl lg:text-2xl">
                 {name}
