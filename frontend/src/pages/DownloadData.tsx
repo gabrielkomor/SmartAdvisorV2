@@ -12,20 +12,20 @@ const DownloadData = (): JSX.Element => {
       <div className="flex items-center justify-center mt-6 mb-4">
         <div className="join w-4/5 gap-px overflow-hidden rounded-3xl shadow-2xs">
           <input
-            className="join-item btn flex-1 text-lg sm:text-xl border-r border-base-300"
+            className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
             type="radio"
             name="radio_stock"
             aria-label="Forex"
             defaultChecked
           />
           <input
-            className="join-item btn flex-1 text-lg sm:text-xl border-r border-base-300"
+            className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
             type="radio"
             name="radio_stock"
             aria-label="Stock"
           />
           <input
-            className="join-item btn flex-1 text-lg sm:text-xl border-r border-base-300"
+            className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
             type="radio"
             name="radio_stock"
             aria-label="ETF"
@@ -78,7 +78,7 @@ const DownloadData = (): JSX.Element => {
             onChange={(event) => setTimeDelta(Number(event.target.value))}
             className="range range-primary w-3/4 mt-5 sm:range-md lg:range-xl"
           />
-          <div className="flex w-3/4 justify-between mt-2 sm:text-sm md:text-base lg:text-lg font-semibold">
+          <div className="flex w-3/4 justify-between mt-2 text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
             <span>{minSliderValue}</span>
             <span>
               {timeDelta} {timeDelta === 1 ? "day" : "days"}
@@ -91,7 +91,7 @@ const DownloadData = (): JSX.Element => {
 
         <div className="flex flex-col w-1/2 justify-center items-center">
           <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
-            Time Backward:
+            Time Back:
           </span>
           <input
             type="range"
@@ -101,7 +101,7 @@ const DownloadData = (): JSX.Element => {
             onChange={(event) => setTimeBackward(Number(event.target.value))}
             className="range range-primary w-3/4 mt-5 sm:range-md lg:range-xl"
           />
-          <div className="flex w-3/4 justify-between mt-2 sm:text-sm md:text-base lg:text-lg font-semibold">
+          <div className="flex w-3/4 justify-between mt-2 text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
             <span>{minSliderValue}</span>
             <span>
               {timeBackward} {timeBackward === 1 ? "day" : "days"}
@@ -116,7 +116,7 @@ const DownloadData = (): JSX.Element => {
       {/* BUTTON */}
       <div className="flex justify-center">
         <button
-          className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 items-center justify-center
+          className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3 items-center justify-center
                       transition-all duration-200 
                       active:scale-95 font-medium
                       bg-primary text-primary-content hover:bg-secondary/50

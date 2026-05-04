@@ -24,7 +24,7 @@ const Layout = (): JSX.Element => {
             <main
               className="
                 flex-1 min-h-0
-                p-4 sm:p-6 lg:p-8
+                p-4
                 bg-base-300 rounded-3xl shadow-xl
                 overflow-auto
               "
