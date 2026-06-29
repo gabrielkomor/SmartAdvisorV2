@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import type { JSX } from "react";
 
@@ -15,6 +15,7 @@ const App = (): JSX.Element => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="downloadData" replace />} />
           <Route path="downloadData" element={<DownloadData />} />
           <Route path="candleChart" element={<CandleChart />} />
           <Route path="signalsHistory" element={<SignalsHistory />} />

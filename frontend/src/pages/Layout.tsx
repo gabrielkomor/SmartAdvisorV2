@@ -13,19 +13,19 @@ const Layout = (): JSX.Element => {
       <LayoutHeader />
 
       {/* BODY */}
-      <div className="flex flex-1 min-h-0 flex-col lg:flex-row gap-2 p-2 relative">
+      <div className="flex flex-1 flex-col lg:flex-row gap-2 p-2 relative">
         {/* SIDEBAR */}
         <LayoutSidebar />
 
         {/* CONTENT */}
-        <div className="flex flex-1 flex-col lg:flex-row min-h-0 gap-2">
-          <div className="flex flex-col flex-1 min-h-0">
+        <div className="flex flex-1 flex-col lg:flex-row gap-2">
+          <div className="flex flex-col flex-1">
             <main
               className="
-          flex-1 min-h-0
+          flex-1
           p-4
           bg-base-300 rounded-3xl shadow-xl
-          overflow-auto
+          min-h-[70vh] lg:min-h-0
         "
             >
               <Outlet />
