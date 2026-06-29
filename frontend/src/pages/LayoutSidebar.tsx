@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import { Fragment, type JSX } from "react";
 import { NavLink } from "react-router-dom";
 import { navItems } from "./layoutDecision";
 
@@ -27,8 +27,8 @@ const LayoutSidebar = (): JSX.Element => {
           const Icon = item.icon;
 
           return (
-            <>
-              <li key={item.name} className="flex-1 lg:w-full lg:mt-2">
+            <Fragment key={item.name}>
+              <li className="flex-1 lg:w-full lg:mt-2">
                 <NavLink
                   to={item.path}
                   className={({ isActive }) => `
@@ -52,7 +52,7 @@ const LayoutSidebar = (): JSX.Element => {
               {item.divider && index !== navItems.length - 1 && (
                 <div className="hidden lg:block w-full h-px bg-base-content/20 my-6.5" />
               )}
-            </>
+            </Fragment>
           );
         })}
       </ul>

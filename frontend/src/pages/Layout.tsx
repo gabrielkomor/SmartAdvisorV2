@@ -25,7 +25,7 @@ const Layout = (): JSX.Element => {
           flex-1
           p-4
           bg-base-300 rounded-3xl shadow-xl
-          min-h-[55vh] sm:min-h-[65h] lg:min-h-0
+          min-h-[70vh] lg:min-h-0
         "
             >
               <Outlet />

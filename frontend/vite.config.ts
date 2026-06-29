@@ -11,4 +11,8 @@ export default defineConfig({
   resolve: {
     dedupe: ["lightweight-charts"],
   },
+  server: {
+    host: true,
+    allowedHosts: ["elective-clerk-moaner.ngrok-free.dev"],
+  },
 });
