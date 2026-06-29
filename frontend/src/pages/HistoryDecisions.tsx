@@ -30,8 +30,18 @@ const HistoryDecisions = (): JSX.Element => {
   };
 
   return (
-    <div className="h-full">
-      <Chart type="bar" data={data} options={options} />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-1 w-full h-full">
+      <div className="h-full">
+        <Chart type="bar" data={data} options={options} />
+      </div>
+
+      <div className="h-full">
+        <Chart type="bar" data={data} options={options} />
+      </div>
+
+      <div className="h-full">
+        <Chart type="bar" data={data} options={options} />
+      </div>
     </div>
   );
 };
