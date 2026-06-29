@@ -11,7 +11,7 @@ const LayoutSidebar = (): JSX.Element => {
         w-full h-16
         flex flex-row items-center
         overflow-x-auto
-        lg:w-64 lg:h-full
+        lg:w-64 lg:h-full z-50
         lg:flex-col lg:justify-center lg:overflow-y-auto
       "
     >
@@ -49,7 +49,6 @@ const LayoutSidebar = (): JSX.Element => {
                 </NavLink>
               </li>
 
-              {/* DIVIDER — tylko na desktopie (pewna wersja) */}
               {item.divider && index !== navItems.length - 1 && (
                 <div className="hidden lg:block w-full h-px bg-base-content/20 my-6.5" />
               )}

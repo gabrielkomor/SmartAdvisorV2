@@ -7,8 +7,6 @@ const LayoutRightIndicators = (): JSX.Element => {
       className="
     w-full lg:w-64
     bg-base-300 p-4 rounded-3xl shadow-xl
-    min-h-0 max-h-28 sm:max-h-40 lg:max-h-none
-    overflow-y-auto overflow-x-hidden
     flex flex-col justify-start lg:justify-center
   "
     >
