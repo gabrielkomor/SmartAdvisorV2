@@ -10,6 +10,9 @@ import {
   Legend,
 } from "chart.js";
 
+import DecisionRow from "../components/DecisionRow";
+import type { Decision } from "../types/decision";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -58,9 +61,21 @@ const SignalsHistory = (): JSX.Element => {
     },
   };
 
+  const row1: Decision[] = ["hold", "hold", "buy", "hold", "sell", "buy"];
+  const row2: Decision[] = ["hold", "buy", "sell", "buy", "hold", "buy"];
+  const row3: Decision[] = ["buy", "hold", "hold", "sell", "sell", "buy"];
+
   return (
-    <div className="h-full">
-      <Chart type="line" data={data} options={options} />
+    <div className="grid grid-cols-1 h-full w-full">
+      <div className="h-full">
+        <Chart type="line" data={data} options={options} />
+      </div>
+
+      <div className="h-1/5">
+        <DecisionRow title={"Additive decision method"} decisions={row1} />
+        <DecisionRow title="Majority vote decision method" decisions={row2} />
+        <DecisionRow title="Median decision method" decisions={row3} />
+      </div>
     </div>
   );
 };
