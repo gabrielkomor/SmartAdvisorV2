@@ -122,7 +122,7 @@ export default function CandlestickChart() {
   ];
 
   const macdSignalToPlot = [
-    { x: dataToPlot[0].x + 10, y: 0.4 },
+    { x: dataToPlot[0].x, y: 0.4 },
     { x: dataToPlot[1].x, y: 0.6 },
     { x: dataToPlot[2].x, y: 0.25 },
     { x: dataToPlot[3].x, y: 0.5 },
@@ -165,6 +165,11 @@ export default function CandlestickChart() {
     { x: dataToPlot[4].x, y: 26 },
     { x: dataToPlot[5].x, y: 27 },
   ];
+
+  const maxMacdBarThickness = Math.max(
+    2,
+    Math.floor(((window.innerWidth * 0.75) / dataToPlot.length) * 0.55),
+  );
 
   const priceData: ChartData<"candlestick" | "line" | "bar"> = {
     datasets: [
@@ -298,6 +303,10 @@ export default function CandlestickChart() {
         type: "bar",
         label: "MACD Histogram",
         data: macdHistogramToPlot,
+        barThickness: "flex",
+        maxBarThickness: maxMacdBarThickness,
+        barPercentage: 0.75,
+        categoryPercentage: 0.8,
         backgroundColor: (ctx) => {
           const raw = ctx.raw as { y: number };
           return raw.y >= 0 ? "rgba(0, 200, 5, 0.8)" : "rgba(255, 50, 50, 0.8)";
@@ -371,6 +380,10 @@ export default function CandlestickChart() {
         type: "time",
         time: {
           unit: "day",
+        },
+        offset: true,
+        grid: {
+          offset: true,
         },
       },
       y: {
