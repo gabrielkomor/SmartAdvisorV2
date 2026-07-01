@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 
-import { Chart as ChartJS } from "chart.js";
+import { Chart as ChartJS, type ChartData } from "chart.js";
 import {
   CandlestickController,
   CandlestickElement,
@@ -58,18 +58,45 @@ export default function CandlestickChart() {
     { x: 1491436800000 + 43200000, y: 1700 },
   ];
 
-  const priceData = {
+  const smaToPlot = [
+    { x: 1491004800000 + 43200000, y: 31 },
+    { x: 1491091200000 + 43200000, y: 32 },
+    { x: 1491177600000 + 43200000, y: 30 },
+    { x: 1491264000000 + 43200000, y: 32 },
+    { x: 1491350400000 + 43200000, y: 31 },
+    { x: 1491436800000 + 43200000, y: 30 },
+  ];
+
+  const priceData: ChartData<"candlestick" | "line"> = {
     datasets: [
       {
         type: "candlestick" as const,
         label: "Price",
         data: dataToPlot,
         borderColor: "rgba(0, 150, 136, 1)",
-        color: {
+        borderColors: {
           up: "rgba(0, 200, 5, 1)",
           down: "rgba(200, 0, 0, 1)",
           unchanged: "rgba(100, 100, 100, 1)",
         },
+        backgroundColors: {
+          up: "rgba(0, 200, 5, 0.3)",
+          down: "rgba(200, 0, 0, 0.3)",
+          unchanged: "rgba(100, 100, 100, 0.3)",
+        },
+        backgroundColor: "rgba(140, 140, 140, 1)",
+        yAxisID: "y",
+      },
+
+      {
+        type: "line",
+        label: "SMA",
+        data: smaToPlot,
+        borderColor: "rgb(229, 235, 52)",
+        backgroundColor: "rgba(215, 235, 52, 1)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
         yAxisID: "y",
       },
     ],
