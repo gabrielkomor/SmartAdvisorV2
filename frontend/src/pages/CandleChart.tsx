@@ -58,7 +58,7 @@ export default function CandlestickChart() {
     { x: 1491436800000 + 43200000, y: 1700 },
   ];
 
-  const smaToPlot = [
+  const sma10ToPlot = [
     { x: 1491004800000 + 43200000, y: 31 },
     { x: 1491091200000 + 43200000, y: 32 },
     { x: 1491177600000 + 43200000, y: 30 },
@@ -67,7 +67,106 @@ export default function CandlestickChart() {
     { x: 1491436800000 + 43200000, y: 30 },
   ];
 
-  const priceData: ChartData<"candlestick" | "line"> = {
+  const sma20ToPlot = [
+    { x: 1491004800000 + 43200000, y: 32 },
+    { x: 1491091200000 + 43200000, y: 33 },
+    { x: 1491177600000 + 43200000, y: 31 },
+    { x: 1491264000000 + 43200000, y: 33 },
+    { x: 1491350400000 + 43200000, y: 32 },
+    { x: 1491436800000 + 43200000, y: 31 },
+  ];
+
+  const sma30ToPlot = [
+    { x: 1491004800000 + 43200000, y: 33 },
+    { x: 1491091200000 + 43200000, y: 34 },
+    { x: 1491177600000 + 43200000, y: 32 },
+    { x: 1491264000000 + 43200000, y: 34 },
+    { x: 1491350400000 + 43200000, y: 33 },
+    { x: 1491436800000 + 43200000, y: 32 },
+  ];
+
+  const RsiToPlot = [
+    { x: 1491004800000 + 43200000, y: 34 },
+    { x: 1491091200000 + 43200000, y: 35 },
+    { x: 1491177600000 + 43200000, y: 33 },
+    { x: 1491264000000 + 43200000, y: 35 },
+    { x: 1491350400000 + 43200000, y: 34 },
+    { x: 1491436800000 + 43200000, y: 33 },
+  ];
+
+  const bollingerUpperToPlot = [
+    { x: dataToPlot[0].x, y: 35 },
+    { x: dataToPlot[1].x, y: 36 },
+    { x: dataToPlot[2].x, y: 34 },
+    { x: dataToPlot[3].x, y: 36 },
+    { x: dataToPlot[4].x, y: 35 },
+    { x: dataToPlot[5].x, y: 34 },
+  ];
+
+  const bollingerLowerToPlot = [
+    { x: dataToPlot[0].x, y: 29 },
+    { x: dataToPlot[1].x, y: 30 },
+    { x: dataToPlot[2].x, y: 28 },
+    { x: dataToPlot[3].x, y: 30 },
+    { x: dataToPlot[4].x, y: 29 },
+    { x: dataToPlot[5].x, y: 28 },
+  ];
+
+  const macdLineToPlot = [
+    { x: dataToPlot[0].x, y: 0.5 },
+    { x: dataToPlot[1].x, y: 0.8 },
+    { x: dataToPlot[2].x, y: 0.3 },
+    { x: dataToPlot[3].x, y: 0.6 },
+    { x: dataToPlot[4].x, y: 0.2 },
+    { x: dataToPlot[5].x, y: 0.4 },
+  ];
+
+  const macdSignalToPlot = [
+    { x: dataToPlot[0].x + 10, y: 0.4 },
+    { x: dataToPlot[1].x, y: 0.6 },
+    { x: dataToPlot[2].x, y: 0.25 },
+    { x: dataToPlot[3].x, y: 0.5 },
+    { x: dataToPlot[4].x, y: 0.15 },
+    { x: dataToPlot[5].x, y: 0.3 },
+  ];
+
+  const macdHistogramToPlot = [
+    { x: dataToPlot[0].x, y: -0.5 },
+    { x: dataToPlot[1].x, y: 0.2 },
+    { x: dataToPlot[2].x, y: 0.05 },
+    { x: dataToPlot[3].x, y: 0.1 },
+    { x: dataToPlot[4].x, y: 0.05 },
+    { x: dataToPlot[5].x, y: 0.1 },
+  ];
+
+  const plusDIToPlot = [
+    { x: dataToPlot[0].x, y: 22 },
+    { x: dataToPlot[1].x, y: 25 },
+    { x: dataToPlot[2].x, y: 23 },
+    { x: dataToPlot[3].x, y: 27 },
+    { x: dataToPlot[4].x, y: 24 },
+    { x: dataToPlot[5].x, y: 26 },
+  ];
+
+  const minusDIToPlot = [
+    { x: dataToPlot[0].x, y: 18 },
+    { x: dataToPlot[1].x, y: 15 },
+    { x: dataToPlot[2].x, y: 20 },
+    { x: dataToPlot[3].x, y: 17 },
+    { x: dataToPlot[4].x, y: 22 },
+    { x: dataToPlot[5].x, y: 19 },
+  ];
+
+  const adxLineToPlot = [
+    { x: dataToPlot[0].x, y: 25 },
+    { x: dataToPlot[1].x, y: 26 },
+    { x: dataToPlot[2].x, y: 24 },
+    { x: dataToPlot[3].x, y: 28 },
+    { x: dataToPlot[4].x, y: 26 },
+    { x: dataToPlot[5].x, y: 27 },
+  ];
+
+  const priceData: ChartData<"candlestick" | "line" | "bar"> = {
     datasets: [
       {
         type: "candlestick" as const,
@@ -88,16 +187,166 @@ export default function CandlestickChart() {
         yAxisID: "y",
       },
 
+      // --- SMA 10 20 30 ---
       {
         type: "line",
-        label: "SMA",
-        data: smaToPlot,
+        label: "SMA 10",
+        data: sma10ToPlot,
         borderColor: "rgb(229, 235, 52)",
         backgroundColor: "rgba(215, 235, 52, 1)",
         borderWidth: 2,
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
+        hidden: true,
+      },
+
+      {
+        type: "line",
+        label: "SMA 20",
+        data: sma20ToPlot,
+        borderColor: "rgb(55, 52, 235)",
+        backgroundColor: "rgba(30, 52, 235)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+
+      {
+        type: "line",
+        label: "SMA 30",
+        data: sma30ToPlot,
+        borderColor: "rgb(235, 83, 52)",
+        backgroundColor: "rgba(220, 83, 52)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+
+      // --- RSI ---
+      {
+        type: "line",
+        label: "RSI",
+        data: RsiToPlot,
+        borderColor: "rgb(235, 12, 12)",
+        backgroundColor: "rgba(220, 52, 52)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+
+      // --- Bollinger Bands ---
+      {
+        type: "line",
+        label: "BB Upper",
+        data: bollingerUpperToPlot,
+        borderColor: "rgba(0, 150, 255, 1)",
+        backgroundColor: "rgba(0, 150, 255, 0.3)",
+        borderWidth: 1,
+        pointRadius: 0,
+        tension: 0.2,
+        borderDash: [6, 6],
+        yAxisID: "y",
+        hidden: true,
+      },
+      {
+        type: "line",
+        label: "BB Lower",
+        data: bollingerLowerToPlot,
+        borderColor: "rgba(0, 150, 255, 1)",
+        backgroundColor: "rgba(0, 150, 255, 0.3)",
+        borderWidth: 1,
+        pointRadius: 0,
+        tension: 0.2,
+        borderDash: [6, 6],
+        yAxisID: "y",
+        hidden: true,
+      },
+
+      // --- MACD ---
+      {
+        type: "line",
+        label: "MACD",
+        data: macdLineToPlot,
+        borderColor: "rgba(255, 165, 0, 1)",
+        backgroundColor: "rgba(255, 165, 0, 0.3)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+      {
+        type: "line",
+        label: "MACD Signal",
+        data: macdSignalToPlot,
+        borderColor: "rgba(255, 100, 0, 1)",
+        backgroundColor: "rgba(255, 100, 0, 0.3)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+      {
+        type: "bar",
+        label: "MACD Histogram",
+        data: macdHistogramToPlot,
+        backgroundColor: (ctx) => {
+          const raw = ctx.raw as { y: number };
+          return raw.y >= 0 ? "rgba(0, 200, 5, 0.8)" : "rgba(255, 50, 50, 0.8)";
+        },
+        borderColor: (ctx) => {
+          const raw = ctx.raw as { y: number };
+          return raw.y >= 0 ? "rgba(0, 200, 5, 1)" : "rgba(255, 50, 50, 1)";
+        },
+        borderWidth: 1,
+        yAxisID: "y",
+        hidden: true,
+      },
+
+      // --- ADX ---
+      {
+        type: "line",
+        label: "+DI",
+        data: plusDIToPlot,
+        borderColor: "rgba(0, 200, 0, 1)",
+        backgroundColor: "rgba(0, 200, 0, 0.3)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+      {
+        type: "line",
+        label: "-DI",
+        data: minusDIToPlot,
+        borderColor: "rgba(200, 0, 0, 1)",
+        backgroundColor: "rgba(200, 0, 0, 0.3)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
+      },
+      {
+        type: "line",
+        label: "ADX",
+        data: adxLineToPlot,
+        borderColor: "rgba(150, 150, 150, 1)",
+        backgroundColor: "rgba(150, 150, 150, 0.3)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
+        yAxisID: "y",
+        hidden: true,
       },
     ],
   };
