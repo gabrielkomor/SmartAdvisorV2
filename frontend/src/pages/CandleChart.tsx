@@ -14,6 +14,7 @@ import {
   TimeScale,
   Tooltip,
   Legend,
+  BarElement,
 } from "chart.js";
 
 ChartJS.register(
@@ -24,6 +25,7 @@ ChartJS.register(
   TimeScale,
   Tooltip,
   Legend,
+  BarElement,
 );
 
 export default function CandlestickChart() {
@@ -39,17 +41,28 @@ export default function CandlestickChart() {
   }, []);
 
   const dataToPlot = [
-    { x: 1491004800000, o: 31.11, h: 33.04, l: 30.58, c: 32.03 },
-    { x: 1491177600000, o: 31.23, h: 34.77, l: 30.35, c: 32.24 },
-    { x: 1491264000000, o: 31.08, h: 34.68, l: 29.54, c: 32.48 },
-    { x: 1491350400000, o: 31.68, h: 33.49, l: 28.72, c: 30.46 },
-    { x: 1491436800000, o: 29.4, h: 31.83, l: 27.02, c: 29.76 },
+    { x: 1491004800000 + 43200000, o: 31.11, h: 33.04, l: 30.58, c: 32.03 },
+    { x: 1491091200000 + 43200000, o: 32.05, h: 32.8, l: 31.4, c: 31.9 },
+    { x: 1491177600000 + 43200000, o: 31.9, h: 34.77, l: 30.35, c: 33.1 },
+    { x: 1491264000000 + 43200000, o: 33.1, h: 34.68, l: 32.2, c: 32.48 },
+    { x: 1491350400000 + 43200000, o: 32.5, h: 33.49, l: 28.72, c: 30.46 },
+    { x: 1491436800000 + 43200000, o: 30.5, h: 31.83, l: 27.02, c: 29.76 },
   ];
 
-  const data = {
+  const volumeToPlot = [
+    { x: 1491004800000 + 43200000, y: 1200 },
+    { x: 1491091200000 + 43200000, y: 1500 },
+    { x: 1491177600000 + 43200000, y: 2800 },
+    { x: 1491264000000 + 43200000, y: 2100 },
+    { x: 1491350400000 + 43200000, y: 3200 },
+    { x: 1491436800000 + 43200000, y: 1700 },
+  ];
+
+  const priceData = {
     datasets: [
       {
-        label: "Financial Chart",
+        type: "candlestick" as const,
+        label: "Price",
         data: dataToPlot,
         borderColor: "rgba(0, 150, 136, 1)",
         color: {
@@ -57,11 +70,24 @@ export default function CandlestickChart() {
           down: "rgba(200, 0, 0, 1)",
           unchanged: "rgba(100, 100, 100, 1)",
         },
+        yAxisID: "y",
       },
     ],
   };
 
-  const options = {
+  const volumeData = {
+    datasets: [
+      {
+        type: "bar" as const,
+        label: "Volume",
+        data: volumeToPlot,
+        yAxisID: "yVolume",
+        backgroundColor: "rgba(20, 20, 20, 0.9)",
+      },
+    ],
+  };
+
+  const priceOptions = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -77,9 +103,62 @@ export default function CandlestickChart() {
     },
   } satisfies import("chart.js").ChartOptions<"candlestick">;
 
+  const volumeOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          unit: "day",
+        },
+        offset: true,
+
+        ticks: {
+          source: "data",
+          autoSkip: false,
+          maxRotation: 0,
+        },
+
+        grid: {
+          offset: true,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        display: false,
+        grid: {
+          display: false,
+        },
+        ticks: {
+          display: false,
+        },
+        border: {
+          display: false,
+        },
+      },
+    },
+  } satisfies import("chart.js").ChartOptions<"bar">;
+
   return (
-    <div className="w-full h-full">
-      <Chart key={resizeKey} type="candlestick" data={data} options={options} />
+    <div className="w-full h-full flex flex-col">
+      <div className="h-[79%]">
+        <Chart
+          type="candlestick"
+          key={resizeKey}
+          data={priceData}
+          options={priceOptions}
+        />
+      </div>
+
+      <div className="h-[19%]">
+        <Chart
+          type="bar"
+          key={resizeKey}
+          data={volumeData}
+          options={volumeOptions}
+        />
+      </div>
     </div>
   );
 }

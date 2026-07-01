@@ -3,7 +3,7 @@ import { decisionColor, summary } from "./layoutDecision";
 
 const LayoutBottomSummary = (): JSX.Element => {
   return (
-    <div className="flex h-28 w-full items-center bg-base-300 p-2 md:p-1 lg:p-1 rounded-3xl mt-2 shadow-xl overflow-hidden">
+    <aside className="flex h-28 w-full items-center bg-base-300 p-2 md:p-1 lg:p-1 rounded-3xl mt-2 shadow-xl overflow-hidden">
       <ul className="grid h-full w-full grid-cols-3 gap-2 sm:gap-3 lg:gap-4 sm:p-1 md:p-2 lg:p-3">
         {summary.map(({ name, value }) => (
           <li
@@ -25,7 +25,7 @@ const LayoutBottomSummary = (): JSX.Element => {
           </li>
         ))}
       </ul>
-    </div>
+    </aside>
   );
 };
 
