@@ -1,5 +1,6 @@
-import { type JSX } from "react";
+import { type JSX, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useAppStore } from "../store/useAppStrore";
 
 import LayoutHeader from "./LayoutHeader";
 import LayoutSidebar from "./LayoutSidebar";
@@ -7,6 +8,12 @@ import LayoutBottomSummary from "./LayoutBottomSummary";
 import LayoutRightIndicators from "./LayoutRightIndicators";
 
 const Layout = (): JSX.Element => {
+  const theme = useAppStore((state) => state.theme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
   return (
     <div className="flex flex-col h-screen">
       {/* HEADER */}
