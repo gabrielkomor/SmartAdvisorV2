@@ -1,10 +1,17 @@
-import { useState, type JSX } from "react";
+import { type JSX } from "react";
+import { useAppStore } from "../store/useAppStrore";
 
 const DownloadData = (): JSX.Element => {
-  const minSliderValue = 1;
-  const maxSliderValue = 100;
-  const [timeDelta, setTimeDelta] = useState(50);
-  const [timeBackward, setTimeBackward] = useState(50);
+  const actionType = useAppStore((state) => state.actionType);
+  const setActionType = useAppStore((state) => state.setActionType);
+  const symbol = useAppStore((state) => state.symbol);
+  const setSymbol = useAppStore((state) => state.setSymbol);
+  const timeFrame = useAppStore((state) => state.timeFrame);
+  const setTimeFrame = useAppStore((state) => state.setTimeFrame);
+  const timeDelta = useAppStore((state) => state.timeDelta);
+  const setTimeDelta = useAppStore((state) => state.setTimeDelta);
+  const timeBack = useAppStore((state) => state.timeBack);
+  const setTimeBack = useAppStore((state) => state.setTimeBack);
 
   return (
     <div className="min-h-full flex flex-col justify-center">
@@ -16,19 +23,24 @@ const DownloadData = (): JSX.Element => {
             type="radio"
             name="radio_stock"
             aria-label="Forex"
-            defaultChecked
+            checked={actionType === "Forex"}
+            onChange={() => setActionType("Forex")}
           />
           <input
             className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
             type="radio"
             name="radio_stock"
             aria-label="Stock"
+            checked={actionType === "Stock"}
+            onChange={() => setActionType("Stock")}
           />
           <input
             className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
             type="radio"
             name="radio_stock"
             aria-label="ETF"
+            checked={actionType === "ETF"}
+            onChange={() => setActionType("ETF")}
           />
         </div>
       </div>
@@ -41,7 +53,11 @@ const DownloadData = (): JSX.Element => {
           <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
             Symbol:
           </span>
-          <select className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4 shadow-2xs">
+          <select
+            className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4 shadow-2xs"
+            value={symbol}
+            onChange={(e) => setSymbol(e.target.value)}
+          >
             <option className="font-bold">NVDA</option>
             <option className="font-bold">AMD</option>
             <option className="font-bold">INTC</option>
@@ -54,7 +70,11 @@ const DownloadData = (): JSX.Element => {
           <span className="font-bold sm:text-2xl md:text-3xl lg:text-4xl">
             Time Frame:
           </span>
-          <select className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4 shadow-2xs">
+          <select
+            className="select select-info select-sm sm:select-md lg:select-xl font-bold mt-5 w-3/4 shadow-2xs"
+            value={timeFrame}
+            onChange={(e) => setTimeFrame(e.target.value)}
+          >
             <option className="font-bold">1 M</option>
             <option className="font-bold">1 H</option>
             <option className="font-bold">1 D</option>
@@ -72,18 +92,18 @@ const DownloadData = (): JSX.Element => {
           </span>
           <input
             type="range"
-            min={minSliderValue}
-            max={maxSliderValue}
+            min={1}
+            max={100}
             value={timeDelta}
-            onChange={(event) => setTimeDelta(Number(event.target.value))}
+            onChange={(e) => setTimeDelta(Number(e.target.value))}
             className="range range-primary w-3/4 mt-5 sm:range-md lg:range-xl"
           />
           <div className="flex w-3/4 justify-between mt-2 text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
-            <span>{minSliderValue}</span>
+            <span>{1}</span>
             <span>
               {timeDelta} {timeDelta === 1 ? "day" : "days"}
             </span>
-            <span>{maxSliderValue}</span>
+            <span>{100}</span>
           </div>
         </div>
 
@@ -95,18 +115,18 @@ const DownloadData = (): JSX.Element => {
           </span>
           <input
             type="range"
-            min={minSliderValue}
-            max={maxSliderValue}
-            value={timeBackward}
-            onChange={(event) => setTimeBackward(Number(event.target.value))}
+            min={0}
+            max={90}
+            value={timeBack}
+            onChange={(e) => setTimeBack(Number(e.target.value))}
             className="range range-primary w-3/4 mt-5 sm:range-md lg:range-xl"
           />
           <div className="flex w-3/4 justify-between mt-2 text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
-            <span>{minSliderValue}</span>
+            <span>{0}</span>
             <span>
-              {timeBackward} {timeBackward === 1 ? "day" : "days"}
+              {timeBack} {timeBack === 1 ? "day" : "days"}
             </span>
-            <span>{maxSliderValue}</span>
+            <span>{90}</span>
           </div>
         </div>
       </div>

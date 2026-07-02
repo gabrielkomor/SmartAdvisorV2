@@ -73,8 +73,8 @@ const SignalsHistory = (): JSX.Element => {
 
       <div className="h-1/5">
         <DecisionRow title={"Additive decision method"} decisions={row1} />
-        <DecisionRow title="Majority vote decision method" decisions={row2} />
-        <DecisionRow title="Median decision method" decisions={row3} />
+        <DecisionRow title={"Majority vote decision method"} decisions={row2} />
+        <DecisionRow title={"Median decision method"} decisions={row3} />
       </div>
     </div>
   );
