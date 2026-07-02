@@ -19,7 +19,7 @@ const getColor = (decision: Decision) => {
 const DecisionRow = ({ title, decisions }: DecisionRowProps) => {
   return (
     <>
-      <p className="text-black text-sm mb-0.5 text-center">{title}</p>
+      <p className="text-sm font-bold mb-0.5 text-center">{title}</p>
       <div className="border border-gray-700 rounded p-1 mt-0.5">
         <div
           className="grid"
