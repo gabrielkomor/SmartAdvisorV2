@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
+import { useAppStore } from "../store/useAppStrore";
 
 import { Chart as ChartJS, type ChartData } from "chart.js";
 import {
@@ -29,6 +30,35 @@ ChartJS.register(
 );
 
 export default function CandlestickChart() {
+  const showCandles = useAppStore((state) => state.showCandles);
+  const setShowCandles = useAppStore((state) => state.setShowCandles);
+  const showSma10 = useAppStore((state) => state.showSma10);
+  const setShowSma10 = useAppStore((state) => state.setShowSma10);
+  const showSma20 = useAppStore((state) => state.showSma20);
+  const setShowSma20 = useAppStore((state) => state.setShowSma20);
+  const showSma30 = useAppStore((state) => state.showSma30);
+  const setShowSma30 = useAppStore((state) => state.setShowSma30);
+  const showRsi = useAppStore((state) => state.showRsi);
+  const setShowRsi = useAppStore((state) => state.setShowRsi);
+  const showBbUpper = useAppStore((state) => state.showBbUpper);
+  const setShowBbUpper = useAppStore((state) => state.setShowBbUpper);
+  const showBbLower = useAppStore((state) => state.showBbLower);
+  const setShowBbLower = useAppStore((state) => state.setShowBbLower);
+  const showMacd = useAppStore((state) => state.showMacd);
+  const setShowMacd = useAppStore((state) => state.setShowMacd);
+  const showMacdSignal = useAppStore((state) => state.showMacdSignal);
+  const setShowMacdSignal = useAppStore((state) => state.setShowMacdSignal);
+  const showMacdHisto = useAppStore((state) => state.showMacdHisto);
+  const setShowMacdHisto = useAppStore((state) => state.setShowMacdHisto);
+  const showDiPlus = useAppStore((state) => state.showDiPlus);
+  const setShowDiPlus = useAppStore((state) => state.setShowDiPlus);
+  const showDiMinus = useAppStore((state) => state.showDiMinus);
+  const setShowDiMinus = useAppStore((state) => state.setShowDiMinus);
+  const showAdx = useAppStore((state) => state.showAdx);
+  const setShowAdx = useAppStore((state) => state.setShowAdx);
+  const showVolume = useAppStore((state) => state.showVolume);
+  const setShowVolume = useAppStore((state) => state.setShowVolume);
+
   const [resizeKey, setResizeKey] = useState(0);
 
   useEffect(() => {
@@ -190,6 +220,7 @@ export default function CandlestickChart() {
         },
         backgroundColor: "rgba(140, 140, 140, 1)",
         yAxisID: "y",
+        hidden: showCandles,
       },
 
       // --- SMA 10 20 30 ---
@@ -203,7 +234,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showSma10,
       },
 
       {
@@ -216,7 +247,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showSma20,
       },
 
       {
@@ -229,7 +260,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showSma30,
       },
 
       // --- RSI ---
@@ -243,7 +274,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showRsi,
       },
 
       // --- Bollinger Bands ---
@@ -258,7 +289,7 @@ export default function CandlestickChart() {
         tension: 0.2,
         borderDash: [6, 6],
         yAxisID: "y",
-        hidden: true,
+        hidden: !showBbUpper,
       },
       {
         type: "line",
@@ -271,7 +302,7 @@ export default function CandlestickChart() {
         tension: 0.2,
         borderDash: [6, 6],
         yAxisID: "y",
-        hidden: true,
+        hidden: !showBbLower,
       },
 
       // --- MACD ---
@@ -285,7 +316,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showMacd,
       },
       {
         type: "line",
@@ -297,7 +328,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showMacdSignal,
       },
       {
         type: "bar",
@@ -317,7 +348,7 @@ export default function CandlestickChart() {
         },
         borderWidth: 1,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showMacdHisto,
       },
 
       // --- ADX ---
@@ -331,7 +362,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showDiPlus,
       },
       {
         type: "line",
@@ -343,7 +374,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showDiMinus,
       },
       {
         type: "line",
@@ -355,7 +386,7 @@ export default function CandlestickChart() {
         pointRadius: 0,
         tension: 0.2,
         yAxisID: "y",
-        hidden: true,
+        hidden: !showAdx,
       },
     ],
   };
@@ -368,6 +399,7 @@ export default function CandlestickChart() {
         data: volumeToPlot,
         yAxisID: "yVolume",
         backgroundColor: "rgba(20, 20, 20, 0.9)",
+        hidden: showVolume,
       },
     ],
   };
@@ -388,6 +420,39 @@ export default function CandlestickChart() {
       },
       y: {
         beginAtZero: false,
+      },
+    },
+    plugins: {
+      legend: {
+        onClick: (_event, legendItem) => {
+          if (legendItem.text === "Price") {
+            setShowCandles(!showCandles);
+          } else if (legendItem.text === "SMA 10") {
+            setShowSma10(!showSma10);
+          } else if (legendItem.text === "SMA 20") {
+            setShowSma20(!showSma20);
+          } else if (legendItem.text === "SMA 30") {
+            setShowSma30(!showSma30);
+          } else if (legendItem.text === "RSI") {
+            setShowRsi(!showRsi);
+          } else if (legendItem.text === "BB Upper") {
+            setShowBbUpper(!showBbUpper);
+          } else if (legendItem.text === "BB Lower") {
+            setShowBbLower(!showBbLower);
+          } else if (legendItem.text === "MACD") {
+            setShowMacd(!showMacd);
+          } else if (legendItem.text === "MACD Signal") {
+            setShowMacdSignal(!showMacdSignal);
+          } else if (legendItem.text === "MACD Histogram") {
+            setShowMacdHisto(!showMacdHisto);
+          } else if (legendItem.text === "+DI") {
+            setShowDiPlus(!showDiPlus);
+          } else if (legendItem.text === "-DI") {
+            setShowDiMinus(!showDiMinus);
+          } else if (legendItem.text === "ADX") {
+            setShowAdx(!showAdx);
+          }
+        },
       },
     },
   } satisfies import("chart.js").ChartOptions<"candlestick">;
@@ -424,6 +489,15 @@ export default function CandlestickChart() {
         },
         border: {
           display: false,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        onClick: (_event, legendItem) => {
+          if (legendItem.text === "Volume") {
+            setShowVolume(!showVolume);
+          }
         },
       },
     },
