@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { decisionColor, summary } from "./layoutDecision";
+import { decisionColor, summary } from "../components/layoutDecision";
 
 const LayoutBottomSummary = (): JSX.Element => {
   return (
