@@ -1,6 +1,6 @@
 import { Fragment, type JSX } from "react";
 import { NavLink } from "react-router-dom";
-import { navItems } from "./layoutDecision";
+import { navItems } from "../components/layoutDecision";
 
 const LayoutSidebar = (): JSX.Element => {
   return (

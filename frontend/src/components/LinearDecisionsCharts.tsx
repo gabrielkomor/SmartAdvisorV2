@@ -1,0 +1,90 @@
+import type { JSX } from "react";
+import { Chart } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+);
+
+const LinearDecisionsChart = (): JSX.Element => {
+  const data_buy = {
+    labels: [1, 2, 3, 4, 5],
+    datasets: [
+      {
+        label: "Buy",
+        data: [50, 12, 90, 14, 13],
+        borderColor: "rgba(0, 160, 0, 1)",
+        backgroundColor: "rgba(0, 160, 0, 0.3)",
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const data_sell = {
+    labels: [1, 2, 3, 4, 5],
+    datasets: [
+      {
+        label: "Sell",
+        data: [50, 12, 90, 14, 13],
+        borderColor: "rgba(210, 0, 0, 1)",
+        backgroundColor: "rgba(210, 0, 0, 0.3)",
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const data_hold = {
+    labels: [1, 2, 3, 4, 5],
+    datasets: [
+      {
+        label: "Hold",
+        data: [50, 12, 90, 14, 13],
+        borderColor: "rgba(120, 120, 120, 1)",
+        backgroundColor: "rgba(120, 120, 120, 0.3)",
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        min: 0,
+        max: 100,
+      },
+    },
+  };
+
+  return (
+    <>
+      <div className="h-full">
+        <Chart type="line" data={data_buy} options={options} />
+      </div>
+
+      <div className="h-full">
+        <Chart type="line" data={data_sell} options={options} />
+      </div>
+
+      <div className="h-full">
+        <Chart type="line" data={data_hold} options={options} />
+      </div>
+    </>
+  );
+};
+
+export default LinearDecisionsChart;

@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { decisionColor, indicators } from "./layoutDecision";
+import { decisionColor, indicators } from "../components/layoutDecision";
 
 const LayoutRightIndicators = (): JSX.Element => {
   return (
