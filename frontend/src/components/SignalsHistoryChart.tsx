@@ -5,6 +5,7 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  LineController,
   LineElement,
   PointElement,
   Tooltip,
@@ -14,12 +15,12 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  LineController,
   LineElement,
   PointElement,
   Tooltip,
   Legend,
 );
-
 import DecisionRow from "./DecisionRow";
 import type { Decision } from "../types/decision";
 
