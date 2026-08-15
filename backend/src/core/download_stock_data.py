@@ -1,74 +1,44 @@
 import yfinance as yf
+import pandas as pd
 import threading
 import time
-from datetime import datetime
 
 
-SYMBOL = "NVDA"
+SYMBOL = "BTC-USD"
 
-prices = []
-
-
-def on_message(message):
-    if "price" in message and message["price"] is not None:
-        prices.append({
-            "price": float(message["price"]),
-            "time": int(message["time"])
-        })
+# def websocket_worker():
+#     with yf.WebSocket(verbose=False) as ws:
+#         ws.subscribe([SYMBOL])
+#         print(ws.listen())
 
 
-def websocket_worker():
-    with yf.WebSocket(verbose=False) as ws:
-        ws.subscribe([SYMBOL])
-        ws.listen(on_message)
+# thread = threading.Thread(
+#     target=websocket_worker,
+#     daemon=True
+# )
 
+# thread.start()
 
-thread = threading.Thread(
-    target=websocket_worker,
-    daemon=True
-)
+# pd.set_option("display.max_rows", None)
 
-thread.start()
+data = yf.download(
+    SYMBOL,
+    period="3d",
+    interval="1h",
+    auto_adjust=False
+)[["Open", "High", "Low", "Close", "Volume"]]
 
+print(data)
 
-print(f"Nasłuchiwanie {SYMBOL}...\n")
+# print(f"Nasłuchiwanie {SYMBOL}...\n")
 
+# while True:
+#     time.sleep(10)
 
-try:
-    while True:
+from strategy_methods import calculate_sma, calculate_rsi, calculate_bollinger_bands, calculate_macd, calculate_adx
 
-        # Czekamy 10 sekund
-        time.sleep(60)
-
-        if not prices:
-            print("Brak danych.")
-            continue
-
-        # Pobieramy ceny z ostatnich 10 sekund
-        current_prices = prices.copy()
-
-        # Czyścimy bufor
-        prices.clear()
-
-        values = [x["price"] for x in current_prices]
-
-        open_price = values[0]
-        high_price = max(values)
-        low_price = min(values)
-        close_price = values[-1]
-
-        now = datetime.now().strftime("%H:%M:%S")
-
-        print("=" * 50)
-        print(f"Czas: {now}")
-        print(f"Symbol: {SYMBOL}")
-        print(f"Liczba aktualizacji: {len(values)}")
-        print()
-        print(f"Open:  {open_price}")
-        print(f"High:  {high_price}")
-        print(f"Low:   {low_price}")
-        print(f"Close: {close_price}")
-
-
-except KeyboardInterrupt:
-    print("\nZamykanie programu...")
+print(f"========= sma: {calculate_sma(data)} \n")
+# print(f"========= rsi: {calculate_rsi(data)} \n")
+# print(f"========= bb: {calculate_bollinger_bands(data)} \n")
+# print(f"========= macd: {calculate_macd(data)} \n")
+# print(f"========= adx: {calculate_adx(data)} \n")
