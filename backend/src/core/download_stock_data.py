@@ -1,40 +1,47 @@
+import threading
+
 import yfinance as yf
 import pandas as pd
-import threading
-import time
 
 
-SYMBOL = "BTC-USD"
-
-# def websocket_worker():
-#     with yf.WebSocket(verbose=False) as ws:
-#         ws.subscribe([SYMBOL])
-#         print(ws.listen())
+def websocket_worker(symbol: str) -> None:
+    with yf.WebSocket(verbose=False) as ws:
+        ws.subscribe([symbol])
+        ws.listen()
 
 
-# thread = threading.Thread(
-#     target=websocket_worker,
-#     daemon=True
-# )
+def start_live_data_download() -> None:
+    thread = threading.Thread(
+        target=websocket_worker,
+        daemon=True
+    )
 
-# thread.start()
+    thread.start()
 
-# pd.set_option("display.max_rows", None)
 
-start_download = time.time()
+def download_data(symbol: str, period: str, interval: str) -> pd.DataFrame:
+    data = yf.download(
+        symbol,
+        period=period,
+        interval=interval,
+        auto_adjust=False
+    )[["Open", "High", "Low", "Close", "Volume"]]
 
-data = yf.download(
-    SYMBOL,
-    period="28d",
-    interval="1h",
-    auto_adjust=False
-)[["Open", "High", "Low", "Close", "Volume"]]
+    data.columns = data.columns.get_level_values(0)
+    return data
 
-data.columns = data.columns.get_level_values(0)
 
-end_download = time.time()
+# from calculate_strategies_methods import calculate_strategies, calculate_signals, interpret_strategies_result
 
-print(data)
+# data = download_data(symbol="BTC-USD", period="28d", interval="1h")
+
+# print(data)
+
+# strategies = calculate_strategies(data)
+# signals_buy, signals_sell, signals_hold = calculate_signals(data, strategies)
+# strategies_result = interpret_strategies_result(signals_buy, signals_sell, signals_hold)
+
+# print(strategies_result)
 
 # print(f"Nasłuchiwanie {SYMBOL}...\n")
 
@@ -48,25 +55,3 @@ print(data)
 # print(f"========= bb: {calculate_bollinger_bands(data)} \n")
 # print(f"========= macd: {calculate_macd(data)} \n")
 # print(f"========= adx: {calculate_adx(data)} \n")
-
-from calculate_strategies_methods import calculate_strategies, calculate_signals
-import numpy as np
-
-start_calculation = time.time()
-
-strategies = calculate_strategies(data)
-
-signals_buy = np.zeros(7)
-signals_sell = np.zeros(7)
-signals_hold = np.zeros(7)
-
-signals_buy, signals_sell, signals_hold = calculate_signals(data, strategies)
-
-print("BUY: ",  " ".join(f"{x:6.2f}" for x in signals_buy))
-print("SELL: ", " ".join(f"{x:6.2f}" for x in signals_sell))
-print("HOLD: ", " ".join(f"{x:6.2f}" for x in signals_hold))
-
-end_calculation = time.time()
-
-print(f"Download data time: {round(end_download - start_download, 5)}")
-print(f"Calculation time: {round(end_calculation - start_calculation, 5)}")

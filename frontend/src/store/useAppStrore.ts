@@ -51,10 +51,10 @@ type AppStore = AppState & {
 export const useAppStore = create<AppStore>((set) => ({
   theme: "corporate",
   actionType: "Forex",
-  symbol: "NVDA",
-  timeFrame: "1 M",
-  timeDelta: 50,
-  timeBack: 45,
+  symbol: "BTC-USD",
+  timeFrame: "1 H",
+  timeDelta: 20,
+  timeBack: 0,
 
   showCandles: false,
   showSma10: false,

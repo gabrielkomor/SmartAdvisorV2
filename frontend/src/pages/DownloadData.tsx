@@ -61,6 +61,7 @@ const DownloadData = (): JSX.Element => {
             <option className="font-bold">NVDA</option>
             <option className="font-bold">AMD</option>
             <option className="font-bold">INTC</option>
+            <option className="font-bold">BTC-USD</option>
           </select>
         </div>
 

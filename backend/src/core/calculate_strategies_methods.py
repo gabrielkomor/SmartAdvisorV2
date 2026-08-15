@@ -8,12 +8,12 @@ from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
 
-import strategy_methods as strategy_methods
-import strategy_functions as strategy_functions
-import interpretation_methods as interpretation_methods
+import src.core.strategy_methods as strategy_methods
+import src.core.strategy_functions as strategy_functions
+import src.core.interpretation_methods as interpretation_methods
 
 
-def calculate_strategies(data: pd.DataFrame) -> Dict:
+def calculate_strategies(data: pd.DataFrame) -> Dict[str, pd.DataFrame | float]:
     """
     This function is responsible for calculating indicators values.
     :param data: data.
@@ -123,7 +123,7 @@ def calculate_signals(data: pd.DataFrame, strategies: Dict) -> Tuple[np.ndarray,
 
 def interpret_strategies_result(
     signals_buy: np.ndarray, signals_sell: np.ndarray, signals_hold: np.ndarray
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> tuple[str, str, str]:
     """
     This function is responsible for aggregating the results of calculated trading signals.
     :param signals_buy: buy data.
@@ -140,4 +140,9 @@ def interpret_strategies_result(
     median = interpretation_methods.median_method(
         signals_buy, signals_sell, signals_hold
     )
+
+    additive = "buy" if additive[0] == 1 else "sell" if additive[1] == 1 else "hold"
+    majority = "buy" if majority[0] == 1 else "sell" if majority[1] == 1 else "hold"
+    median = "buy" if median[0] == 1 else "sell" if median[1] == 1 else "hold"
+
     return additive, majority, median
