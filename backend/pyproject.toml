@@ -9,6 +9,10 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.141.1",
+    "pydantic>=2.13.4",
+    "uvicorn[standard]>=0.52.1",
+    "websocket-client>=1.9.0",
+    "yfinance>=1.5.2",
 ]
 
 [project.scripts]
@@ -20,3 +24,9 @@ build-backend = "uv_build"
 
 [tool.uv]
 package = false
+
+[dependency-groups]
+dev = [
+    "black>=26.5.1",
+    "pytest>=9.1.1",
+]
