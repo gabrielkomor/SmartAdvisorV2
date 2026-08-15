@@ -281,8 +281,8 @@ def calculate_signals_volume(
     :param signals_hold: hold data.
     :return: nothing, modifies existing array.
     """
-    values = np.array(data["tick_volume"].iloc[-10:-2])
-    current_value = data["tick_volume"].iloc[-2]
+    values = np.array(data["Volume"].iloc[-10:-2])
+    current_value = data["Volume"].iloc[-2]
     mean = values.mean()
     min_value = mean * 0.9
     max_value = mean * 1.1

@@ -8,9 +8,9 @@ from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
 
-import src.backend.strategy_methods as strategy_methods
-import src.backend.strategy_functions as strategy_functions
-import src.backend.interpretation_methods as interpretation_methods
+import strategy_methods as strategy_methods
+import strategy_functions as strategy_functions
+import interpretation_methods as interpretation_methods
 
 
 def calculate_strategies(data: pd.DataFrame) -> Dict:
@@ -28,7 +28,6 @@ def calculate_strategies(data: pd.DataFrame) -> Dict:
     bb_upper, bb_lower, bb_std = strategy_methods.calculate_bollinger_bands(
         data=data, period=20
     )
-    fibo_levels, levels = strategy_methods.calculate_fibonacci_levels(data=data)
 
     strategies = {
         "rsi": rsi,
@@ -46,14 +45,12 @@ def calculate_strategies(data: pd.DataFrame) -> Dict:
         "adx_ndi": adx_ndi,
         "bb_upper": bb_upper,
         "bb_lower": bb_lower,
-        "bb_std": bb_std,
-        "levels": levels,
-        "fibo_lvl": fibo_levels,
+        "bb_std": bb_std
     }
     return strategies
 
 
-def calculate_signals(data: pd.DataFrame, strategies: Dict) -> Tuple:
+def calculate_signals(data: pd.DataFrame, strategies: Dict) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     This function is responsible for calculate trading signals.
     :param data: data.
