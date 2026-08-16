@@ -24,10 +24,11 @@ def additive_method(
 
     if vd_max == vd_hold:
         return np.array([0, 0, 1])
-    elif vd_max == vd_buy:
+
+    if vd_max == vd_buy:
         return np.array([1, 0, 0])
-    else:
-        return np.array([0, 1, 0])
+
+    return np.array([0, 1, 0])
 
 
 def majority_vote_method(
@@ -48,10 +49,11 @@ def majority_vote_method(
 
     if max_value == pos_hold:
         return np.array([0, 0, 1])
-    elif max_value == pos_buy:
+
+    if max_value == pos_buy:
         return np.array([1, 0, 0])
-    else:
-        return np.array([0, 1, 0])
+
+    return np.array([0, 1, 0])
 
 
 def median_method(
@@ -72,7 +74,8 @@ def median_method(
 
     if max_value == median_hold:
         return np.array([0, 0, 1])
-    elif max_value == median_buy:
+
+    if max_value == median_buy:
         return np.array([1, 0, 0])
-    else:
-        return np.array([0, 1, 0])
+
+    return np.array([0, 1, 0])

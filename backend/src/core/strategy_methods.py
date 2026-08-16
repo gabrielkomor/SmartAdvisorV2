@@ -1,14 +1,14 @@
 """
-This file contains functions that are used to calculate the values of technical indicators based on data from
-financial markets.
+This file contains functions that are used to calculate the values of technical
+indicators based on data from financial markets.
 """
 
-from typing import Tuple
-
 import pandas as pd
+import numpy as np
+from pandas.api.extensions import ExtensionArray
 
 
-def calculate_sma(data: pd.DataFrame, period: int = 14) -> Tuple[float, float]:
+def calculate_sma(data: pd.DataFrame, period: int = 14) -> tuple[float, pd.Series]:
     """
     This function is responsible for calculate sma based on financial data.
     :param data: data.
@@ -21,7 +21,7 @@ def calculate_sma(data: pd.DataFrame, period: int = 14) -> Tuple[float, float]:
     return ma, sma
 
 
-def calculate_rsi(data: pd.DataFrame, period: int = 14) -> float:
+def calculate_rsi(data: pd.DataFrame, period: int = 14) -> pd.Series:
     """
     This function is responsible for calculate rsi based on financial data.
     :param data: data.
@@ -38,7 +38,7 @@ def calculate_rsi(data: pd.DataFrame, period: int = 14) -> float:
 
 def calculate_bollinger_bands(
     data: pd.DataFrame, period: int = 20, multiplier: int = 2
-) -> Tuple[float, float, float]:
+) -> tuple[pd.Series, pd.Series, pd.Series]:
     """
     This function is responsible for calculate bb based on financial data.
     :param data: data.
@@ -58,7 +58,11 @@ def calculate_macd(
     short_period: int = 12,
     long_period: int = 26,
     signal_period: int = 9,
-) -> tuple[float, float, float]:
+) -> tuple[
+    pd.Series,
+    pd.Series,
+    np.ndarray[tuple[int], np.dtype] | ExtensionArray,
+]:
     """
     This function is responsible for calculate macd based on financial data.
     :param data: data.
@@ -75,7 +79,9 @@ def calculate_macd(
     return macd_line, signal_line, macd_hist.iloc[-5:].values
 
 
-def calculate_adx(data: pd.DataFrame, period: int = 14) -> Tuple[float, float, float]:
+def calculate_adx(
+    data: pd.DataFrame, period: int = 14
+) -> tuple[pd.Series, pd.Series, pd.Series]:
     """
     This function is responsible for calculate adx based on financial data.
     :param data: financial data.

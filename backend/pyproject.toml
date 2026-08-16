@@ -15,9 +15,6 @@ dependencies = [
     "yfinance>=1.5.2",
 ]
 
-[project.scripts]
-backend = "backend:main"
-
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
 build-backend = "uv_build"
@@ -28,5 +25,13 @@ package = false
 [dependency-groups]
 dev = [
     "black>=26.5.1",
+    "flake8>=7.3.0",
+    "mypy>=2.3.1",
+    "pandas-stubs>=3.0.5.260730",
+    "pylint>=4.0.7",
     "pytest>=9.1.1",
 ]
+
+[[tool.mypy.overrides]]
+module = ["yfinance"]
+ignore_missing_imports = true

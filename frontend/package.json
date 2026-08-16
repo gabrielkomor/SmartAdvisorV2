@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "mobile": "vite -- --host=0.0.0.0"
+    "mobile": "vite -- --host=0.0.0.0",
+    "static": "black ../backend/src && flake8 ../backend/src --max-line-length=120 --exclude=.venv && mypy ../backend/src"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
