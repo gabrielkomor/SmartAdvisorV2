@@ -1,44 +1,46 @@
+"""
+This file is responsible for downloading stock market data using the yfinance library.
+"""
+
+import threading
+
 import yfinance as yf
 import pandas as pd
-import threading
-import time
 
 
-SYMBOL = "BTC-USD"
+def websocket_worker(symbol: str) -> None:
+    """_summary_
 
-# def websocket_worker():
-#     with yf.WebSocket(verbose=False) as ws:
-#         ws.subscribe([SYMBOL])
-#         print(ws.listen())
+    :param symbol: _description_
+    :type symbol: str
+    """
+    with yf.WebSocket(verbose=False) as ws:
+        ws.subscribe([symbol])
+        ws.listen()
 
 
-# thread = threading.Thread(
-#     target=websocket_worker,
-#     daemon=True
-# )
+def start_live_data_download() -> None:
+    """_summary_"""
+    thread = threading.Thread(target=websocket_worker, daemon=True)
 
-# thread.start()
+    thread.start()
 
-# pd.set_option("display.max_rows", None)
 
-data = yf.download(
-    SYMBOL,
-    period="3d",
-    interval="1h",
-    auto_adjust=False
-)[["Open", "High", "Low", "Close", "Volume"]]
+def download_data(symbol: str, period: str, interval: str) -> pd.DataFrame:
+    """
+    This function is responsible for downloading market data from yahoo finance
+    :param symbol: stock market symbol
+    :type symbol: str
+    :param period: data time peroid
+    :type period: str
+    :param interval: market interval eg. 1m, 15m
+    :type interval: str
+    :return: downloaded stock market data
+    :rtype: pd.DataFrame
+    """
+    data: pd.DataFrame = yf.download(
+        symbol, period=period, interval=interval, auto_adjust=False, progress=False
+    )[["Open", "High", "Low", "Close", "Volume"]]
 
-print(data)
-
-# print(f"Nasłuchiwanie {SYMBOL}...\n")
-
-# while True:
-#     time.sleep(10)
-
-from strategy_methods import calculate_sma, calculate_rsi, calculate_bollinger_bands, calculate_macd, calculate_adx
-
-print(f"========= sma: {calculate_sma(data)} \n")
-# print(f"========= rsi: {calculate_rsi(data)} \n")
-# print(f"========= bb: {calculate_bollinger_bands(data)} \n")
-# print(f"========= macd: {calculate_macd(data)} \n")
-# print(f"========= adx: {calculate_adx(data)} \n")
+    data.columns = data.columns.get_level_values(0)
+    return data
