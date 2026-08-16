@@ -1,6 +1,17 @@
 {
-  "dependencies": {
-    "plotly.js-dist-min": "^3.5.1",
-    "react-plotly.js": "^2.5.1"
+  "scripts": {
+    "dev-frontend": "npm --prefix frontend run dev",
+    "dev-backend": "cd backend && uv run main.py",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "static:backend-format": "cd backend && uv run black src",
+    "static:backend-sync": "cd backend && uv sync && echo uv OK",
+    "static:backend-black": "cd backend && uv run black --check src && echo Black OK",
+    "static:backend-flake8": "cd backend && uv run flake8 src --max-line-length=120 --exclude=.venv && echo Flake8: OK",
+    "static:backend-mypy": "cd backend && uv run mypy src && echo MyPy: OK",
+    "static:backend-pylint": "cd backend && uv run pylint src && echo Pylint: OK",
+    "static:backend": "npm run static:backend-sync && npm run static:backend-black && npm run static:backend-flake8 && npm run static:backend-mypy && npm run static:backend-pylint",
+    "static:frontend": "npm --prefix frontend run lint",
+    "static": "npm run static:backend && npm run static:frontend"
   }
 }
