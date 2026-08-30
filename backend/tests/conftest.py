@@ -4,7 +4,28 @@ This file contains example stock market data.
 
 import pytest
 import pandas as pd
+import numpy as np
 from pandas import Timestamp
+
+
+@pytest.fixture
+def strategies_values() -> dict:
+    """
+    This function is responsible for creating example strategies data.
+    :return: sample strategies data
+    :rtype: dict
+    """
+    return {
+        "sma_10": 215.7654602050781,
+        "sma_30": 218.20536041259766,
+        "rsi": pd.Series([32.27551321124943]),
+        "bb_upper": pd.Series([220.26088702307322]),
+        "bb_lower": pd.Series([213.65072338952444]),
+        "macd_hist": np.array([0.05610227112835231]),
+        "adx": pd.Series([26.341779845201575]),
+        "adx_pdi": pd.Series([13.005467071507226]),
+        "adx_ndi": pd.Series([21.99661244130494]),
+    }
 
 
 @pytest.fixture
