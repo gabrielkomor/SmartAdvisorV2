@@ -29,7 +29,7 @@ async def download_data_api(data: DownloadData) -> DownloadDataResposne:
     :rtype: DownloadDataResposne
     """
     market_data: pd.DataFrame = download_data(
-        data.symbol, data.time_delta, data.time_frame
+        data.symbol, data.time_delta, data.time_frame, data.time_back
     )
     strategies: dict[str, object] = calculate_strategies(market_data)
     signals_buy, signals_sell, signals_hold = calculate_signals(market_data, strategies)

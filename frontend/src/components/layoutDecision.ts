@@ -14,7 +14,13 @@ type NavItems = Array<{
   icon: LucideIcon;
   divider: boolean;
 }>;
-type Decision = "BUY" | "SELL" | "HOLD";
+type Decision =
+  | "BUY"
+  | "SELL"
+  | "HOLD"
+  | "BUY/SELL"
+  | "B/S/H"
+  | "BUY/SELL/HOLD";
 type DecisionItem = Array<{ name: string; value: Decision }>;
 
 export const decisionColor = (value: Decision): string => {
@@ -25,22 +31,28 @@ export const decisionColor = (value: Decision): string => {
       return "btn-error text-white";
     case "HOLD":
       return "btn-warning text-black";
+    case "BUY/SELL":
+      return "btn text-black bg-gradient-to-r from-green-500 to-red-500";
+    case "B/S/H":
+      return "btn text-black bg-gradient-to-r from-green-500 via-red-500 to-yellow-500";
+    case "BUY/SELL/HOLD":
+      return "btn text-black bg-gradient-to-r from-green-500 via-red-500 to-yellow-500";
   }
 };
 
 export const summary: DecisionItem = [
   { name: "Additive", value: "HOLD" },
-  { name: "Majority", value: "BUY" },
+  { name: "Majority", value: "B/S/H" },
   { name: "Median", value: "BUY" },
 ];
 
 export const indicators: DecisionItem = [
   { name: "SMA", value: "BUY" },
   { name: "RSI", value: "HOLD" },
-  { name: "BB", value: "HOLD" },
-  { name: "MACD", value: "HOLD" },
-  { name: "ADX", value: "BUY" },
-  { name: "Volume", value: "SELL" },
+  { name: "BB", value: "SELL" },
+  { name: "MACD", value: "SELL" },
+  { name: "ADX", value: "BUY/SELL" },
+  { name: "Volume", value: "B/S/H" },
 ];
 
 export const navItems: NavItems = [
