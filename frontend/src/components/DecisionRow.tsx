@@ -7,11 +7,11 @@ interface DecisionRowProps {
 
 const getColor = (decision: Decision) => {
   switch (decision) {
-    case "buy":
+    case "BUY":
       return "bg-green-500";
-    case "sell":
+    case "SELL":
       return "bg-red-500";
-    case "hold":
+    case "HOLD":
       return "bg-gray-400";
   }
 };

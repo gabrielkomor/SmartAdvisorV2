@@ -60,6 +60,8 @@ const MainCandeChart = (): JSX.Element => {
   const showVolume = useAppStore((state) => state.showVolume);
   const setShowVolume = useAppStore((state) => state.setShowVolume);
 
+  const marketData = useAppStore((state) => state.marketData);
+
   const [resizeKey, setResizeKey] = useState(0);
 
   useEffect(() => {
@@ -72,21 +74,54 @@ const MainCandeChart = (): JSX.Element => {
   }, []);
 
   const dataToPlot = [
-    { x: 1491004800000 + 43200000, o: 31.11, h: 33.04, l: 30.58, c: 32.03 },
-    { x: 1491091200000 + 43200000, o: 32.05, h: 32.8, l: 31.4, c: 31.9 },
-    { x: 1491177600000 + 43200000, o: 31.9, h: 34.77, l: 30.35, c: 33.1 },
-    { x: 1491264000000 + 43200000, o: 33.1, h: 34.68, l: 32.2, c: 32.48 },
-    { x: 1491350400000 + 43200000, o: 32.5, h: 33.49, l: 28.72, c: 30.46 },
-    { x: 1491436800000 + 43200000, o: 30.5, h: 31.83, l: 27.02, c: 29.76 },
-  ];
-
-  const volumeToPlot = [
-    { x: 1491004800000 + 43200000, y: 1200 },
-    { x: 1491091200000 + 43200000, y: 1500 },
-    { x: 1491177600000 + 43200000, y: 2800 },
-    { x: 1491264000000 + 43200000, y: 2100 },
-    { x: 1491350400000 + 43200000, y: 3200 },
-    { x: 1491436800000 + 43200000, y: 1700 },
+    {
+      x: 1491004800000 + 43200000,
+      o: 31.11,
+      h: 33.04,
+      l: 30.58,
+      c: 32.03,
+      y: 1200,
+    },
+    {
+      x: 1491091200000 + 43200000,
+      o: 32.05,
+      h: 32.8,
+      l: 31.4,
+      c: 31.9,
+      y: 1500,
+    },
+    {
+      x: 1491177600000 + 43200000,
+      o: 31.9,
+      h: 34.77,
+      l: 30.35,
+      c: 33.1,
+      y: 2800,
+    },
+    {
+      x: 1491264000000 + 43200000,
+      o: 33.1,
+      h: 34.68,
+      l: 32.2,
+      c: 32.48,
+      y: 2100,
+    },
+    {
+      x: 1491350400000 + 43200000,
+      o: 32.5,
+      h: 33.49,
+      l: 28.72,
+      c: 30.46,
+      y: 3200,
+    },
+    {
+      x: 1491436800000 + 43200000,
+      o: 30.5,
+      h: 31.83,
+      l: 27.02,
+      c: 29.76,
+      y: 1700,
+    },
   ];
 
   const sma10ToPlot = [
@@ -199,7 +234,7 @@ const MainCandeChart = (): JSX.Element => {
 
   const maxMacdBarThickness = Math.max(
     2,
-    Math.floor(((window.innerWidth * 0.75) / dataToPlot.length) * 0.55),
+    Math.floor(((window.innerWidth * 0.75) / marketData.length) * 0.55),
   );
 
   const priceData: ChartData<"candlestick" | "line" | "bar"> = {
@@ -207,7 +242,7 @@ const MainCandeChart = (): JSX.Element => {
       {
         type: "candlestick" as const,
         label: "Price",
-        data: dataToPlot,
+        data: marketData,
         borderColor: "rgba(0, 150, 136, 1)",
         borderColors: {
           up: "rgba(0, 200, 5, 1)",
@@ -397,7 +432,7 @@ const MainCandeChart = (): JSX.Element => {
       {
         type: "bar" as const,
         label: "Volume",
-        data: volumeToPlot,
+        data: marketData,
         yAxisID: "yVolume",
         backgroundColor: "rgba(20, 20, 20, 0.9)",
         hidden: showVolume,

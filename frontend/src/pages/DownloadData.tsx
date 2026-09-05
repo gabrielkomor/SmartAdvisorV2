@@ -13,6 +13,56 @@ const DownloadData = (): JSX.Element => {
   const setTimeDelta = useAppStore((state) => state.setTimeDelta);
   const timeBack = useAppStore((state) => state.timeBack);
   const setTimeBack = useAppStore((state) => state.setTimeBack);
+  const setSummary = useAppStore((state) => state.setSummary);
+  const setIndicators = useAppStore((state) => state.setIndicators);
+  const setMarketData = useAppStore((state) => state.setMarketData);
+
+  const handleDownloadData = async (): Promise<void> => {
+    const result = await downloadDataAPI(
+      actionType,
+      symbol,
+      timeFrame,
+      timeDelta,
+      timeBack,
+    );
+
+    console.log(result);
+
+    const marketData = result.market_data.market_data.map((item) => ({
+      x: item.Datetime,
+      o: item.Open,
+      h: item.High,
+      l: item.Low,
+      c: item.Close,
+      y: item.Volume,
+    }));
+
+    setMarketData(marketData);
+
+    setIndicators([
+      { name: "SMA", value: result.experts_signals.sma },
+      { name: "RSI", value: result.experts_signals.rsi },
+      { name: "BB", value: result.experts_signals.bb },
+      { name: "MACD", value: result.experts_signals.macd },
+      { name: "ADX", value: result.experts_signals.adx },
+      { name: "Volume", value: result.experts_signals.volume },
+    ]);
+
+    setSummary([
+      {
+        name: "Additive",
+        value: result.aggregation_signals.additive_method,
+      },
+      {
+        name: "Majority",
+        value: result.aggregation_signals.majority_method,
+      },
+      {
+        name: "Median",
+        value: result.aggregation_signals.median_method,
+      },
+    ]);
+  };
 
   return (
     <div className="min-h-full flex flex-col justify-center">
@@ -138,16 +188,7 @@ const DownloadData = (): JSX.Element => {
       {/* BUTTON */}
       <div className="flex justify-center">
         <button
-          onClick={async () => {
-            const result = await downloadDataAPI(
-              actionType,
-              symbol,
-              timeFrame,
-              timeDelta,
-              timeBack,
-            );
-            console.log(result);
-          }}
+          onClick={handleDownloadData}
           className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3 items-center justify-center
                       transition-all duration-200 
                       active:scale-95 font-medium

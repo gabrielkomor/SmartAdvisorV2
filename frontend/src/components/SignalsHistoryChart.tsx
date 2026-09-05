@@ -63,9 +63,9 @@ const SignalsHistoryChart = (): JSX.Element => {
     },
   };
 
-  const row1: Decision[] = ["hold", "hold", "buy", "hold", "sell", "buy"];
-  const row2: Decision[] = ["hold", "buy", "sell", "buy", "hold", "buy"];
-  const row3: Decision[] = ["buy", "hold", "hold", "sell", "sell", "buy"];
+  const row1: Decision[] = ["HOLD", "HOLD", "BUY", "HOLD", "SELL", "BUY"];
+  const row2: Decision[] = ["HOLD", "BUY", "SELL", "BUY", "HOLD", "BUY"];
+  const row3: Decision[] = ["BUY", "HOLD", "HOLD", "SELL", "SELL", "BUY"];
 
   return (
     <>

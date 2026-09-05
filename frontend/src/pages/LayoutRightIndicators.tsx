@@ -1,7 +1,10 @@
 import type { JSX } from "react";
-import { decisionColor, indicators } from "../components/layoutDecision";
+import { decisionColor } from "../components/layoutDecision";
+import { useAppStore } from "../store/useAppStrore";
 
 const LayoutRightIndicators = (): JSX.Element => {
+  const indicators = useAppStore((state) => state.indicators);
+
   return (
     <aside
       className="

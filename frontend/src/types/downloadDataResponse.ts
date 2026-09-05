@@ -1,5 +1,11 @@
+import type { Decision, MarketDataRe } from "./decision";
+
 export type DownloadDataResponse = {
-  market_data: Record<string, unknown>;
-  aggregation_signals: Record<string, unknown>;
-  experts_signals: Record<string, unknown>;
+  market_data: {
+    market_data: MarketDataRe[];
+  };
+
+  aggregation_signals: Record<string, Decision>;
+
+  experts_signals: Record<string, Decision>;
 };

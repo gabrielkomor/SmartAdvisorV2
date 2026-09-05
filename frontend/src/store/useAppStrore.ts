@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { DecisionItem, MarketData } from "../types/decision";
 
 type AppState = {
   theme: string;
@@ -22,6 +23,10 @@ type AppState = {
   showDiMinus: boolean;
   showAdx: boolean;
   showVolume: boolean;
+
+  summary: DecisionItem;
+  indicators: DecisionItem;
+  marketData: MarketData[];
 };
 
 type AppStore = AppState & {
@@ -46,6 +51,10 @@ type AppStore = AppState & {
   setShowDiMinus: (value: boolean) => void;
   setShowAdx: (value: boolean) => void;
   setShowVolume: (value: boolean) => void;
+
+  setSummary: (summary: DecisionItem) => void;
+  setIndicators: (indicators: DecisionItem) => void;
+  setMarketData: (marketData: MarketData[]) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -71,6 +80,72 @@ export const useAppStore = create<AppStore>((set) => ({
   showAdx: false,
   showVolume: false,
 
+  summary: [
+    { name: "Additive", value: "B/S/H" },
+    { name: "Majority", value: "B/S/H" },
+    { name: "Median", value: "B/S/H" },
+  ],
+
+  indicators: [
+    { name: "SMA", value: "B/S/H" },
+    { name: "RSI", value: "B/S/H" },
+    { name: "BB", value: "B/S/H" },
+    { name: "MACD", value: "B/S/H" },
+    { name: "ADX", value: "B/S/H" },
+    { name: "Volume", value: "B/S/H" },
+  ],
+
+  marketData: [
+    {
+      x: 1491004800000 + 43200000,
+      o: 31.11,
+      h: 33.04,
+      l: 30.58,
+      c: 32.03,
+      y: 1200,
+    },
+    {
+      x: 1491091200000 + 43200000,
+      o: 32.05,
+      h: 32.8,
+      l: 31.4,
+      c: 31.9,
+      y: 1200,
+    },
+    {
+      x: 1491177600000 + 43200000,
+      o: 31.9,
+      h: 34.77,
+      l: 30.35,
+      c: 33.1,
+      y: 2800,
+    },
+    {
+      x: 1491264000000 + 43200000,
+      o: 33.1,
+      h: 34.68,
+      l: 32.2,
+      c: 32.48,
+      y: 2100,
+    },
+    {
+      x: 1491350400000 + 43200000,
+      o: 32.5,
+      h: 33.49,
+      l: 28.72,
+      c: 30.46,
+      y: 3200,
+    },
+    {
+      x: 1491436800000 + 43200000,
+      o: 30.5,
+      h: 31.83,
+      l: 27.02,
+      c: 29.76,
+      y: 1700,
+    },
+  ],
+
   setTheme: (theme: string) => set({ theme }),
   setActionType: (type: "Forex" | "Stock" | "ETF") => set({ actionType: type }),
   setSymbol: (symbol: string) => set({ symbol }),
@@ -92,4 +167,8 @@ export const useAppStore = create<AppStore>((set) => ({
   setShowDiMinus: (value) => set({ showDiMinus: value }),
   setShowAdx: (value) => set({ showAdx: value }),
   setShowVolume: (value) => set({ showVolume: value }),
+
+  setSummary: (summary) => set({ summary }),
+  setIndicators: (indicators) => set({ indicators }),
+  setMarketData: (marketData: MarketData[]) => set({ marketData }),
 }));

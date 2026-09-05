@@ -26,7 +26,9 @@ def start_live_data_download() -> None:
     thread.start()
 
 
-def download_data(symbol: str, period: str, interval: int, time_back: int) -> pd.DataFrame:
+def download_data(
+    symbol: str, period: int, interval: str, time_back: int
+) -> pd.DataFrame:
     """
     This function is responsible for downloading market data from yahoo finance
     :param symbol: stock market symbol
@@ -40,12 +42,14 @@ def download_data(symbol: str, period: str, interval: int, time_back: int) -> pd
     :return: downloaded stock market data
     :rtype: pd.DataFrame
     """
-    period = str(period - time_back) + "d"
+    period_str = str(period - time_back) + "d"
     interval = interval.replace(" ", "")
-    
+
     data: pd.DataFrame = yf.download(
-        symbol, period=period, interval=interval, auto_adjust=False, progress=False
+        symbol, period=period_str, interval=interval, auto_adjust=False, progress=False
     )[["Open", "High", "Low", "Close", "Volume"]]
 
     data.columns = data.columns.get_level_values(0)
+    data = data.reset_index()
+    data["Datetime"] = data["Datetime"].astype("int64") * 1_000
     return data
