@@ -31,3 +31,6 @@ Thumbs.db
 
 # --- Docker ---
 *.pid
+
+.mypy_cache
+.pytest_cache

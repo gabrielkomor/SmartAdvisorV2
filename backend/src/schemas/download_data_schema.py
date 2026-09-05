@@ -13,8 +13,8 @@ class DownloadData(BaseModel):
     type: str
     symbol: str
     time_frame: str
-    time_delta: str
-    time_back: str
+    time_delta: int
+    time_back: int
 
 
 class DownloadDataResposne(BaseModel):

@@ -1,5 +1,6 @@
 import { type JSX } from "react";
 import { useAppStore } from "../store/useAppStrore";
+import { downloadDataAPI } from "../services/downloadDataAPI";
 
 const DownloadData = (): JSX.Element => {
   const actionType = useAppStore((state) => state.actionType);
@@ -137,6 +138,16 @@ const DownloadData = (): JSX.Element => {
       {/* BUTTON */}
       <div className="flex justify-center">
         <button
+          onClick={async () => {
+            const result = await downloadDataAPI(
+              actionType,
+              symbol,
+              timeFrame,
+              timeDelta,
+              timeBack,
+            );
+            console.log(result);
+          }}
           className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3 items-center justify-center
                       transition-all duration-200 
                       active:scale-95 font-medium
