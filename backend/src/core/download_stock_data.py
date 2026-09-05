@@ -3,6 +3,7 @@ This file is responsible for downloading stock market data using the yfinance li
 """
 
 import threading
+from datetime import datetime, timedelta
 
 import yfinance as yf
 import pandas as pd
@@ -42,11 +43,12 @@ def download_data(
     :return: downloaded stock market data
     :rtype: pd.DataFrame
     """
-    period_str = str(period - time_back) + "d"
+    start = datetime.now() - timedelta(days=period + time_back)
+    end = datetime.now() - timedelta(days=time_back)
     interval = interval.replace(" ", "")
 
     data: pd.DataFrame = yf.download(
-        symbol, period=period_str, interval=interval, auto_adjust=False, progress=False
+        symbol, start=start, end=end, interval=interval, auto_adjust=False, progress=False
     )[["Open", "High", "Low", "Close", "Volume"]]
 
     data.columns = data.columns.get_level_values(0)
