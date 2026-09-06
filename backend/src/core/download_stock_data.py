@@ -48,7 +48,12 @@ def download_data(
     interval = interval.replace(" ", "")
 
     data: pd.DataFrame = yf.download(
-        symbol, start=start, end=end, interval=interval, auto_adjust=False, progress=False
+        symbol,
+        start=start,
+        end=end,
+        interval=interval,
+        auto_adjust=False,
+        progress=False,
     )[["Open", "High", "Low", "Close", "Volume"]]
 
     data.columns = data.columns.get_level_values(0)
