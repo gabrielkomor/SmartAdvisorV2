@@ -27,6 +27,7 @@ type AppState = {
   summary: DecisionItem;
   indicators: DecisionItem;
   marketData: MarketData[];
+  symbols: string[];
 };
 
 type AppStore = AppState & {
@@ -55,6 +56,7 @@ type AppStore = AppState & {
   setSummary: (summary: DecisionItem) => void;
   setIndicators: (indicators: DecisionItem) => void;
   setMarketData: (marketData: MarketData[]) => void;
+  setSymbols: (symbols: string[]) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -146,6 +148,8 @@ export const useAppStore = create<AppStore>((set) => ({
     },
   ],
 
+  symbols: ["EUR-USD", "GBP-USD", "USD-JPY", "USD-CHF", "AUD-USD"],
+
   setTheme: (theme: string) => set({ theme }),
   setActionType: (type: "Forex" | "Stock" | "ETF") => set({ actionType: type }),
   setSymbol: (symbol: string) => set({ symbol }),
@@ -171,4 +175,5 @@ export const useAppStore = create<AppStore>((set) => ({
   setSummary: (summary) => set({ summary }),
   setIndicators: (indicators) => set({ indicators }),
   setMarketData: (marketData: MarketData[]) => set({ marketData }),
+  setSymbols: (symbols: string[]) => set({ symbols }),
 }));

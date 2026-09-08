@@ -16,6 +16,8 @@ const DownloadData = (): JSX.Element => {
   const setSummary = useAppStore((state) => state.setSummary);
   const setIndicators = useAppStore((state) => state.setIndicators);
   const setMarketData = useAppStore((state) => state.setMarketData);
+  const symbols = useAppStore((state) => state.symbols);
+  const setSymbols = useAppStore((state) => state.setSymbols);
 
   const handleDownloadData = async (): Promise<void> => {
     const result = await downloadDataAPI(
@@ -75,7 +77,17 @@ const DownloadData = (): JSX.Element => {
             name="radio_stock"
             aria-label="Forex"
             checked={actionType === "Forex"}
-            onChange={() => setActionType("Forex")}
+            onChange={() => {
+              setActionType("Forex");
+              setSymbols([
+                "EUR-USD",
+                "GBP-USD",
+                "USD-JPY",
+                "USD-CHF",
+                "AUD-USD",
+              ]);
+              setSymbol("EUR-USD");
+            }}
           />
           <input
             className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
@@ -83,7 +95,11 @@ const DownloadData = (): JSX.Element => {
             name="radio_stock"
             aria-label="Stock"
             checked={actionType === "Stock"}
-            onChange={() => setActionType("Stock")}
+            onChange={() => {
+              setActionType("Stock");
+              setSymbols(["NVDA", "AAPL", "MSFT", "AMZN", "TSLA"]);
+              setSymbol("NVDA");
+            }}
           />
           <input
             className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
@@ -91,7 +107,11 @@ const DownloadData = (): JSX.Element => {
             name="radio_stock"
             aria-label="ETF"
             checked={actionType === "ETF"}
-            onChange={() => setActionType("ETF")}
+            onChange={() => {
+              setActionType("ETF");
+              setSymbols(["SPY", "QQQ", "VTI", "ARKK", "GLD"]);
+              setSymbol("SPY");
+            }}
           />
         </div>
       </div>
@@ -109,10 +129,11 @@ const DownloadData = (): JSX.Element => {
             value={symbol}
             onChange={(e) => setSymbol(e.target.value)}
           >
-            <option className="font-bold">NVDA</option>
-            <option className="font-bold">AMD</option>
-            <option className="font-bold">INTC</option>
-            <option className="font-bold">BTC-USD</option>
+            {symbols.map((s) => (
+              <option key={s} className="font-bold">
+                {s}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -127,9 +148,15 @@ const DownloadData = (): JSX.Element => {
             value={timeFrame}
             onChange={(e) => setTimeFrame(e.target.value)}
           >
-            <option className="font-bold">1 M</option>
-            <option className="font-bold">1 H</option>
-            <option className="font-bold">1 D</option>
+            <option className="font-bold">1 m</option>
+            <option className="font-bold">2 m</option>
+            <option className="font-bold">5 m</option>
+            <option className="font-bold">15 m</option>
+            <option className="font-bold">30 m</option>
+            <option className="font-bold">1 h</option>
+            <option className="font-bold">4 h</option>
+            <option className="font-bold">1 d</option>
+            <option className="font-bold">5 d</option>
           </select>
         </div>
       </div>

@@ -58,5 +58,10 @@ def download_data(
 
     data.columns = data.columns.get_level_values(0)
     data = data.reset_index()
+    
+    if "Datetime" not in data.columns:
+        data = data.reset_index()
+        data.rename(columns={"Date": "Datetime"}, inplace=True)
+    
     data["Datetime"] = data["Datetime"].astype("int64") * 1_000
     return data

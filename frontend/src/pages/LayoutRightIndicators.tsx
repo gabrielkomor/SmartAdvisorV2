@@ -1,9 +1,18 @@
 import type { JSX } from "react";
 import { decisionColor } from "../components/layoutDecision";
 import { useAppStore } from "../store/useAppStrore";
+import type { Decision } from "../types/decision";
 
 const LayoutRightIndicators = (): JSX.Element => {
   const indicators = useAppStore((state) => state.indicators);
+
+  const mapDecision = (value: string): Decision => {
+    const mapping: Record<string, Decision> = {
+      "BUY/SELL/HOLD": "B/S/H",
+    };
+
+    return (mapping[value] ?? value) as Decision;
+  };
 
   return (
     <aside
@@ -26,7 +35,7 @@ const LayoutRightIndicators = (): JSX.Element => {
               <button
                 className={`btn btn-active rounded-2xl sm:text-xs md:text-sm lg:text-xl font-bold cursor-default w-1/2 sm:h-8 md:h-12 lg:h-16 shrink-0 shadow-xl ${decisionColor(value)}`}
               >
-                {value}
+                {mapDecision(value)}
               </button>
             </div>
           </li>
