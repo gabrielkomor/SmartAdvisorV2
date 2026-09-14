@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 
 import yfinance as yf
 import pandas as pd
+from fastapi import HTTPException
 
 
 def websocket_worker(symbol: str) -> None:
@@ -25,6 +26,25 @@ def start_live_data_download() -> None:
     thread = threading.Thread(target=websocket_worker, daemon=True)
 
     thread.start()
+
+
+def _validate_interval(interval: str) -> None:
+    allowed = [
+        "1m",
+        "2m",
+        "5m",
+        "15m",
+        "30m",
+        "60m",
+        "1h",
+        "4h",
+        "1d",
+        "5d"
+    ]
+    if interval not in allowed:
+        raise HTTPException(
+            status_code=400, detail=f"Invalid interval '{interval}'. Allowed: {allowed}"
+        )
 
 
 def download_data(
@@ -47,6 +67,8 @@ def download_data(
     end = datetime.now() - timedelta(days=time_back)
     interval = interval.replace(" ", "")
 
+    _validate_interval(interval)
+
     data: pd.DataFrame = yf.download(
         symbol,
         start=start,
@@ -55,6 +77,12 @@ def download_data(
         auto_adjust=False,
         progress=False,
     )[["Open", "High", "Low", "Close", "Volume"]]
+
+    if data.empty:
+        raise HTTPException(
+            status_code=400,
+            detail="No market data returned for this symbol and interval.",
+        )
 
     data.columns = data.columns.get_level_values(0)
     data = data.reset_index()

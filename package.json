@@ -14,8 +14,8 @@
     "static:frontend": "npm --prefix frontend run lint",
     "static": "npm run static:backend && npm run static:frontend",
     "tests": "npm run static:backend-sync && cd backend && uv run pytest -vv tests && echo Tests: OK",
-    "build:backend": "cd backend && podman build -t backend-image .",
-    "build:frontend": "cd frontend && podman build -t frontend-image .",
+    "build:backend": "cd backend && podman build -t backend-image . --no-cache",
+    "build:frontend": "cd frontend && podman build -t frontend-image . --no-cache",
     "build:all:images": "npm run build:backend && npm run build:frontend",
     "cicd": "npm run static:frontend && npm run static:backend && npm run tests && npm run build:all:images && echo CI/CD: OK"
   }
