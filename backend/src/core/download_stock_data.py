@@ -29,18 +29,7 @@ def start_live_data_download() -> None:
 
 
 def _validate_interval(interval: str) -> None:
-    allowed = [
-        "1m",
-        "2m",
-        "5m",
-        "15m",
-        "30m",
-        "60m",
-        "1h",
-        "4h",
-        "1d",
-        "5d"
-    ]
+    allowed = ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "4h", "1d", "5d"]
     if interval not in allowed:
         raise HTTPException(
             status_code=400, detail=f"Invalid interval '{interval}'. Allowed: {allowed}"
