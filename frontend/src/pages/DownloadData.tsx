@@ -18,8 +18,12 @@ const DownloadData = (): JSX.Element => {
   const setMarketData = useAppStore((state) => state.setMarketData);
   const symbols = useAppStore((state) => state.symbols);
   const setSymbols = useAppStore((state) => state.setSymbols);
+  const setNewChart = useAppStore((state) => state.setNewChart);
 
   const handleDownloadData = async (): Promise<void> => {
+    setMarketData([]);
+    setNewChart(useAppStore.getState().newChart + 1);
+
     const result = await downloadDataAPI(
       actionType,
       symbol,
@@ -27,8 +31,6 @@ const DownloadData = (): JSX.Element => {
       timeDelta,
       timeBack,
     );
-
-    console.log(result);
 
     const marketData = result.market_data.market_data.map((item) => ({
       x: item.Datetime,
@@ -40,6 +42,7 @@ const DownloadData = (): JSX.Element => {
     }));
 
     setMarketData(marketData);
+    setNewChart(useAppStore.getState().newChart + 1);
 
     setIndicators([
       { name: "SMA", value: result.experts_signals.sma },

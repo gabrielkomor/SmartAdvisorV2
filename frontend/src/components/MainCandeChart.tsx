@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import { useAppStore } from "../store/useAppStrore";
@@ -61,6 +61,8 @@ const MainCandeChart = (): JSX.Element => {
   const setShowVolume = useAppStore((state) => state.setShowVolume);
 
   const marketData = useAppStore((state) => state.marketData);
+  const newChart = useAppStore((state) => state.newChart);
+  const symbol = useAppStore((state) => state.symbol);
 
   const [resizeKey, setResizeKey] = useState(0);
 
@@ -73,171 +75,94 @@ const MainCandeChart = (): JSX.Element => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const dataToPlot = [
-    {
-      x: 1491004800000 + 43200000,
-      o: 31.11,
-      h: 33.04,
-      l: 30.58,
-      c: 32.03,
-      y: 1200,
-    },
-    {
-      x: 1491091200000 + 43200000,
-      o: 32.05,
-      h: 32.8,
-      l: 31.4,
-      c: 31.9,
-      y: 1500,
-    },
-    {
-      x: 1491177600000 + 43200000,
-      o: 31.9,
-      h: 34.77,
-      l: 30.35,
-      c: 33.1,
-      y: 2800,
-    },
-    {
-      x: 1491264000000 + 43200000,
-      o: 33.1,
-      h: 34.68,
-      l: 32.2,
-      c: 32.48,
-      y: 2100,
-    },
-    {
-      x: 1491350400000 + 43200000,
-      o: 32.5,
-      h: 33.49,
-      l: 28.72,
-      c: 30.46,
-      y: 3200,
-    },
-    {
-      x: 1491436800000 + 43200000,
-      o: 30.5,
-      h: 31.83,
-      l: 27.02,
-      c: 29.76,
-      y: 1700,
-    },
-  ];
+  const priceBounds = useMemo(() => {
+    if (marketData.length === 0) {
+      return { min: undefined, max: undefined };
+    }
 
-  const sma10ToPlot = [
-    { x: 1491004800000 + 43200000, y: 31 },
-    { x: 1491091200000 + 43200000, y: 32 },
-    { x: 1491177600000 + 43200000, y: 30 },
-    { x: 1491264000000 + 43200000, y: 32 },
-    { x: 1491350400000 + 43200000, y: 31 },
-    { x: 1491436800000 + 43200000, y: 30 },
-  ];
+    let min = Infinity;
+    let max = -Infinity;
 
-  const sma20ToPlot = [
-    { x: 1491004800000 + 43200000, y: 32 },
-    { x: 1491091200000 + 43200000, y: 33 },
-    { x: 1491177600000 + 43200000, y: 31 },
-    { x: 1491264000000 + 43200000, y: 33 },
-    { x: 1491350400000 + 43200000, y: 32 },
-    { x: 1491436800000 + 43200000, y: 31 },
-  ];
+    for (const point of marketData) {
+      min = Math.min(min, point.l);
+      max = Math.max(max, point.h);
+    }
 
-  const sma30ToPlot = [
-    { x: 1491004800000 + 43200000, y: 33 },
-    { x: 1491091200000 + 43200000, y: 34 },
-    { x: 1491177600000 + 43200000, y: 32 },
-    { x: 1491264000000 + 43200000, y: 34 },
-    { x: 1491350400000 + 43200000, y: 33 },
-    { x: 1491436800000 + 43200000, y: 32 },
-  ];
+    const range = max - min;
+    const padding =
+      range > 0 ? range * 0.08 : Math.max(Math.abs(max) * 0.001, 0.0001);
 
-  const RsiToPlot = [
-    { x: 1491004800000 + 43200000, y: 34 },
-    { x: 1491091200000 + 43200000, y: 35 },
-    { x: 1491177600000 + 43200000, y: 33 },
-    { x: 1491264000000 + 43200000, y: 35 },
-    { x: 1491350400000 + 43200000, y: 34 },
-    { x: 1491436800000 + 43200000, y: 33 },
-  ];
+    return { min: min - padding, max: max + padding };
+  }, [marketData]);
 
-  const bollingerUpperToPlot = [
-    { x: dataToPlot[0].x, y: 35 },
-    { x: dataToPlot[1].x, y: 36 },
-    { x: dataToPlot[2].x, y: 34 },
-    { x: dataToPlot[3].x, y: 36 },
-    { x: dataToPlot[4].x, y: 35 },
-    { x: dataToPlot[5].x, y: 34 },
-  ];
+  const chartKey = `${resizeKey}-${newChart}-${symbol}-${marketData.length}-${priceBounds.min}-${priceBounds.max}`;
 
-  const bollingerLowerToPlot = [
-    { x: dataToPlot[0].x, y: 29 },
-    { x: dataToPlot[1].x, y: 30 },
-    { x: dataToPlot[2].x, y: 28 },
-    { x: dataToPlot[3].x, y: 30 },
-    { x: dataToPlot[4].x, y: 29 },
-    { x: dataToPlot[5].x, y: 28 },
-  ];
+  const {
+    sma10ToPlot,
+    sma20ToPlot,
+    sma30ToPlot,
+    rsiToPlot,
+    bollingerUpperToPlot,
+    bollingerLowerToPlot,
+    macdLineToPlot,
+    macdSignalToPlot,
+    macdHistogramToPlot,
+    plusDIToPlot,
+    minusDIToPlot,
+    adxLineToPlot,
+    maxMacdBarThickness,
+  } = useMemo(() => {
+    const dataLength = Math.max(marketData.length, 1);
 
-  const macdLineToPlot = [
-    { x: dataToPlot[0].x, y: 0.5 },
-    { x: dataToPlot[1].x, y: 0.8 },
-    { x: dataToPlot[2].x, y: 0.3 },
-    { x: dataToPlot[3].x, y: 0.6 },
-    { x: dataToPlot[4].x, y: 0.2 },
-    { x: dataToPlot[5].x, y: 0.4 },
-  ];
+    return {
+      sma10ToPlot: marketData.map((d) => ({ x: d.x, y: d.c * 0.99 })),
+      sma20ToPlot: marketData.map((d) => ({ x: d.x, y: d.c * 0.995 })),
+      sma30ToPlot: marketData.map((d) => ({ x: d.x, y: d.c * 1.01 })),
+      rsiToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: 30 + ((i * 7) % 40),
+      })),
+      bollingerUpperToPlot: marketData.map((d) => ({
+        x: d.x,
+        y: d.h * 1.02,
+      })),
+      bollingerLowerToPlot: marketData.map((d) => ({
+        x: d.x,
+        y: d.l * 0.98,
+      })),
+      macdLineToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: Math.sin(i / 10) * 0.5,
+      })),
+      macdSignalToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: Math.sin(i / 10 + 0.5) * 0.4,
+      })),
+      macdHistogramToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: Math.sin(i / 10) * 0.2,
+      })),
+      plusDIToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: 20 + ((i * 3) % 10),
+      })),
+      minusDIToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: 15 + ((i * 5) % 10),
+      })),
+      adxLineToPlot: marketData.map((d, i) => ({
+        x: d.x,
+        y: 22 + ((i * 2) % 8),
+      })),
+      maxMacdBarThickness: Math.max(
+        2,
+        Math.floor(((window.innerWidth * 0.75) / dataLength) * 0.55),
+      ),
+    };
+  }, [marketData]);
 
-  const macdSignalToPlot = [
-    { x: dataToPlot[0].x, y: 0.4 },
-    { x: dataToPlot[1].x, y: 0.6 },
-    { x: dataToPlot[2].x, y: 0.25 },
-    { x: dataToPlot[3].x, y: 0.5 },
-    { x: dataToPlot[4].x, y: 0.15 },
-    { x: dataToPlot[5].x, y: 0.3 },
-  ];
-
-  const macdHistogramToPlot = [
-    { x: dataToPlot[0].x, y: -0.5 },
-    { x: dataToPlot[1].x, y: 0.2 },
-    { x: dataToPlot[2].x, y: 0.05 },
-    { x: dataToPlot[3].x, y: 0.1 },
-    { x: dataToPlot[4].x, y: 0.05 },
-    { x: dataToPlot[5].x, y: 0.1 },
-  ];
-
-  const plusDIToPlot = [
-    { x: dataToPlot[0].x, y: 22 },
-    { x: dataToPlot[1].x, y: 25 },
-    { x: dataToPlot[2].x, y: 23 },
-    { x: dataToPlot[3].x, y: 27 },
-    { x: dataToPlot[4].x, y: 24 },
-    { x: dataToPlot[5].x, y: 26 },
-  ];
-
-  const minusDIToPlot = [
-    { x: dataToPlot[0].x, y: 18 },
-    { x: dataToPlot[1].x, y: 15 },
-    { x: dataToPlot[2].x, y: 20 },
-    { x: dataToPlot[3].x, y: 17 },
-    { x: dataToPlot[4].x, y: 22 },
-    { x: dataToPlot[5].x, y: 19 },
-  ];
-
-  const adxLineToPlot = [
-    { x: dataToPlot[0].x, y: 25 },
-    { x: dataToPlot[1].x, y: 26 },
-    { x: dataToPlot[2].x, y: 24 },
-    { x: dataToPlot[3].x, y: 28 },
-    { x: dataToPlot[4].x, y: 26 },
-    { x: dataToPlot[5].x, y: 27 },
-  ];
-
-  const maxMacdBarThickness = Math.max(
-    2,
-    Math.floor(((window.innerWidth * 0.75) / marketData.length) * 0.55),
-  );
-
-  const priceData: ChartData<"candlestick" | "line" | "bar"> = {
+  const priceData: ChartData<"candlestick" | "line" | "bar"> = useMemo(
+    () => ({
     datasets: [
       {
         type: "candlestick" as const,
@@ -303,7 +228,7 @@ const MainCandeChart = (): JSX.Element => {
       {
         type: "line",
         label: "RSI",
-        data: RsiToPlot,
+        data: rsiToPlot,
         borderColor: "rgb(235, 12, 12)",
         backgroundColor: "rgba(220, 52, 52)",
         borderWidth: 2,
@@ -425,126 +350,219 @@ const MainCandeChart = (): JSX.Element => {
         hidden: !showAdx,
       },
     ],
-  };
-
-  const volumeData = {
-    datasets: [
-      {
-        type: "bar" as const,
-        label: "Volume",
-        data: marketData,
-        yAxisID: "yVolume",
-        backgroundColor: "rgba(20, 20, 20, 0.9)",
-        hidden: showVolume,
-      },
+  }),
+    [
+      marketData,
+      showCandles,
+      showSma10,
+      showSma20,
+      showSma30,
+      showRsi,
+      showBbUpper,
+      showBbLower,
+      showMacd,
+      showMacdSignal,
+      showMacdHisto,
+      showDiPlus,
+      showDiMinus,
+      showAdx,
+      sma10ToPlot,
+      sma20ToPlot,
+      sma30ToPlot,
+      rsiToPlot,
+      bollingerUpperToPlot,
+      bollingerLowerToPlot,
+      macdLineToPlot,
+      macdSignalToPlot,
+      macdHistogramToPlot,
+      plusDIToPlot,
+      minusDIToPlot,
+      adxLineToPlot,
+      maxMacdBarThickness,
+      setShowCandles,
+      setShowSma10,
+      setShowSma20,
+      setShowSma30,
+      setShowRsi,
+      setShowBbUpper,
+      setShowBbLower,
+      setShowMacd,
+      setShowMacdSignal,
+      setShowMacdHisto,
+      setShowDiPlus,
+      setShowDiMinus,
+      setShowAdx,
     ],
-  };
+  );
 
-  const priceOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        type: "time",
-        time: {
-          unit: "day",
+  const volumeData = useMemo(
+    () => ({
+      datasets: [
+        {
+          type: "bar" as const,
+          label: "Volume",
+          data: marketData.map((d) => ({ x: d.x, y: d.y })),
+          yAxisID: "yVolume",
+          backgroundColor: "rgba(20, 20, 20, 0.9)",
+          hidden: showVolume,
         },
-        offset: true,
-        grid: {
-          offset: true,
-        },
-      },
-      y: {
-        beginAtZero: false,
-      },
-    },
-    plugins: {
-      legend: {
-        onClick: (_event, legendItem) => {
-          if (legendItem.text === "Price") {
-            setShowCandles(!showCandles);
-          } else if (legendItem.text === "SMA 10") {
-            setShowSma10(!showSma10);
-          } else if (legendItem.text === "SMA 20") {
-            setShowSma20(!showSma20);
-          } else if (legendItem.text === "SMA 30") {
-            setShowSma30(!showSma30);
-          } else if (legendItem.text === "RSI") {
-            setShowRsi(!showRsi);
-          } else if (legendItem.text === "BB Upper") {
-            setShowBbUpper(!showBbUpper);
-          } else if (legendItem.text === "BB Lower") {
-            setShowBbLower(!showBbLower);
-          } else if (legendItem.text === "MACD") {
-            setShowMacd(!showMacd);
-          } else if (legendItem.text === "MACD Signal") {
-            setShowMacdSignal(!showMacdSignal);
-          } else if (legendItem.text === "MACD Histogram") {
-            setShowMacdHisto(!showMacdHisto);
-          } else if (legendItem.text === "+DI") {
-            setShowDiPlus(!showDiPlus);
-          } else if (legendItem.text === "-DI") {
-            setShowDiMinus(!showDiMinus);
-          } else if (legendItem.text === "ADX") {
-            setShowAdx(!showAdx);
-          }
-        },
-      },
-    },
-  } satisfies import("chart.js").ChartOptions<"candlestick">;
+      ],
+    }),
+    [marketData, showVolume],
+  );
 
-  const volumeOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        type: "time",
-        time: {
-          unit: "day",
+  const priceOptions = useMemo(
+    () =>
+      ({
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        scales: {
+          x: {
+            type: "time",
+            time: {
+              unit: "day",
+            },
+            offset: true,
+            grid: {
+              offset: true,
+            },
+          },
+          y: {
+            beginAtZero: false,
+            min: priceBounds.min,
+            max: priceBounds.max,
+          },
         },
-        offset: true,
+        plugins: {
+          legend: {
+            onClick: (_event, legendItem) => {
+              if (legendItem.text === "Price") {
+                setShowCandles(!showCandles);
+              } else if (legendItem.text === "SMA 10") {
+                setShowSma10(!showSma10);
+              } else if (legendItem.text === "SMA 20") {
+                setShowSma20(!showSma20);
+              } else if (legendItem.text === "SMA 30") {
+                setShowSma30(!showSma30);
+              } else if (legendItem.text === "RSI") {
+                setShowRsi(!showRsi);
+              } else if (legendItem.text === "BB Upper") {
+                setShowBbUpper(!showBbUpper);
+              } else if (legendItem.text === "BB Lower") {
+                setShowBbLower(!showBbLower);
+              } else if (legendItem.text === "MACD") {
+                setShowMacd(!showMacd);
+              } else if (legendItem.text === "MACD Signal") {
+                setShowMacdSignal(!showMacdSignal);
+              } else if (legendItem.text === "MACD Histogram") {
+                setShowMacdHisto(!showMacdHisto);
+              } else if (legendItem.text === "+DI") {
+                setShowDiPlus(!showDiPlus);
+              } else if (legendItem.text === "-DI") {
+                setShowDiMinus(!showDiMinus);
+              } else if (legendItem.text === "ADX") {
+                setShowAdx(!showAdx);
+              }
+            },
+          },
+        },
+      }) satisfies import("chart.js").ChartOptions<"candlestick">,
+    [
+      priceBounds.min,
+      priceBounds.max,
+      showCandles,
+      showSma10,
+      showSma20,
+      showSma30,
+      showRsi,
+      showBbUpper,
+      showBbLower,
+      showMacd,
+      showMacdSignal,
+      showMacdHisto,
+      showDiPlus,
+      showDiMinus,
+      showAdx,
+      setShowCandles,
+      setShowSma10,
+      setShowSma20,
+      setShowSma30,
+      setShowRsi,
+      setShowBbUpper,
+      setShowBbLower,
+      setShowMacd,
+      setShowMacdSignal,
+      setShowMacdHisto,
+      setShowDiPlus,
+      setShowDiMinus,
+      setShowAdx,
+    ],
+  );
 
-        ticks: {
-          source: "data",
-          autoSkip: false,
-          maxRotation: 0,
+  const volumeOptions = useMemo(
+    () =>
+      ({
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        scales: {
+          x: {
+            type: "time",
+            time: {
+              unit: "day",
+            },
+            offset: true,
+            ticks: {
+              source: "data",
+              autoSkip: false,
+              maxRotation: 0,
+            },
+            grid: {
+              offset: true,
+            },
+          },
+          y: {
+            beginAtZero: true,
+            display: false,
+            grid: {
+              display: false,
+            },
+            ticks: {
+              display: false,
+            },
+            border: {
+              display: false,
+            },
+          },
         },
+        plugins: {
+          legend: {
+            onClick: (_event, legendItem) => {
+              if (legendItem.text === "Volume") {
+                setShowVolume(!showVolume);
+              }
+            },
+          },
+        },
+      }) satisfies import("chart.js").ChartOptions<"bar">,
+    [showVolume, setShowVolume],
+  );
 
-        grid: {
-          offset: true,
-        },
-      },
-      y: {
-        beginAtZero: true,
-        display: false,
-        grid: {
-          display: false,
-        },
-        ticks: {
-          display: false,
-        },
-        border: {
-          display: false,
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        onClick: (_event, legendItem) => {
-          if (legendItem.text === "Volume") {
-            setShowVolume(!showVolume);
-          }
-        },
-      },
-    },
-  } satisfies import("chart.js").ChartOptions<"bar">;
+  if (marketData.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center text-base-content/60">
+        Download data to display the chart
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="h-[79%]">
         <Chart
           type="candlestick"
-          key={resizeKey}
+          key={`price-${chartKey}`}
           data={priceData}
           options={priceOptions}
         />
@@ -553,7 +571,7 @@ const MainCandeChart = (): JSX.Element => {
       <div className="h-[19%]">
         <Chart
           type="bar"
-          key={resizeKey}
+          key={`volume-${chartKey}`}
           data={volumeData}
           options={volumeOptions}
         />

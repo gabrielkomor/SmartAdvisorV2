@@ -28,6 +28,7 @@ type AppState = {
   indicators: DecisionItem;
   marketData: MarketData[];
   symbols: string[];
+  newChart: number;
 };
 
 type AppStore = AppState & {
@@ -57,6 +58,7 @@ type AppStore = AppState & {
   setIndicators: (indicators: DecisionItem) => void;
   setMarketData: (marketData: MarketData[]) => void;
   setSymbols: (symbols: string[]) => void;
+  setNewChart: (value: number) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -81,6 +83,7 @@ export const useAppStore = create<AppStore>((set) => ({
   showDiMinus: false,
   showAdx: false,
   showVolume: false,
+  newChart: 0,
 
   summary: [
     { name: "Additive", value: "B/S/H" },
@@ -176,4 +179,5 @@ export const useAppStore = create<AppStore>((set) => ({
   setIndicators: (indicators) => set({ indicators }),
   setMarketData: (marketData: MarketData[]) => set({ marketData }),
   setSymbols: (symbols: string[]) => set({ symbols }),
+  setNewChart: (value) => set({ newChart: value }),
 }));

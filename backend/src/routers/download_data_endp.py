@@ -6,7 +6,7 @@ from fastapi import APIRouter
 import pandas as pd
 
 from src.schemas.download_data_schema import DownloadData, DownloadDataResposne
-from src.core.download_stock_data import download_data
+from src.core.download_stock_data import download_data, normalize_yfinance_symbol
 from src.core.calculate_strategies_methods import (
     calculate_strategies,
     calculate_signals,
@@ -28,8 +28,9 @@ async def download_data_api(data: DownloadData) -> DownloadDataResposne:
     :return: Market data, aggregated strategy signals, and expert signals.
     :rtype: DownloadDataResposne
     """
+    yfinance_symbol = normalize_yfinance_symbol(data.symbol, data.type)
     market_data: pd.DataFrame = download_data(
-        data.symbol, data.time_delta, data.time_frame, data.time_back
+        yfinance_symbol, data.time_delta, data.time_frame, data.time_back
     )
     strategies: dict[str, object] = calculate_strategies(market_data)
     signals_buy, signals_sell, signals_hold = calculate_signals(market_data, strategies)

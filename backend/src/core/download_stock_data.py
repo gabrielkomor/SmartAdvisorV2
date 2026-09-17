@@ -10,6 +10,14 @@ import pandas as pd
 from fastapi import HTTPException
 
 
+FOREX_SYMBOL_MAP = {
+    "EUR-USD": "EURUSD=X",
+    "GBP-USD": "GBPUSD=X",
+    "USD-JPY": "USDJPY=X",
+    "USD-CHF": "USDCHF=X",
+    "AUD-USD": "AUDUSD=X",
+}
+
 def websocket_worker(symbol: str) -> None:
     """_summary_
 
@@ -26,6 +34,23 @@ def start_live_data_download() -> None:
     thread = threading.Thread(target=websocket_worker, daemon=True)
 
     thread.start()
+
+
+def normalize_yfinance_symbol(symbol: str, asset_type: str) -> str:
+    """
+    Map UI forex symbols to yfinance tickers.
+    Pairs like EUR-USD return flat OHLC data; EURUSD=X has proper candles.
+    """
+    if asset_type.lower() != "forex":
+        return symbol
+
+    if symbol in FOREX_SYMBOL_MAP:
+        return FOREX_SYMBOL_MAP[symbol]
+
+    if symbol.endswith("=X"):
+        return symbol
+
+    return symbol.replace("-", "") + "=X"
 
 
 def _validate_interval(interval: str) -> None:
