@@ -13,15 +13,8 @@ type AppState = {
   showSma10: boolean;
   showSma20: boolean;
   showSma30: boolean;
-  showRsi: boolean;
   showBbUpper: boolean;
   showBbLower: boolean;
-  showMacd: boolean;
-  showMacdSignal: boolean;
-  showMacdHisto: boolean;
-  showDiPlus: boolean;
-  showDiMinus: boolean;
-  showAdx: boolean;
   showVolume: boolean;
 
   summary: DecisionItem;
@@ -29,6 +22,7 @@ type AppState = {
   marketData: MarketData[];
   symbols: string[];
   newChart: number;
+  downloadStatus: string;
 };
 
 type AppStore = AppState & {
@@ -43,15 +37,8 @@ type AppStore = AppState & {
   setShowSma10: (value: boolean) => void;
   setShowSma20: (value: boolean) => void;
   setShowSma30: (value: boolean) => void;
-  setShowRsi: (value: boolean) => void;
   setShowBbUpper: (value: boolean) => void;
   setShowBbLower: (value: boolean) => void;
-  setShowMacd: (value: boolean) => void;
-  setShowMacdSignal: (value: boolean) => void;
-  setShowMacdHisto: (value: boolean) => void;
-  setShowDiPlus: (value: boolean) => void;
-  setShowDiMinus: (value: boolean) => void;
-  setShowAdx: (value: boolean) => void;
   setShowVolume: (value: boolean) => void;
 
   setSummary: (summary: DecisionItem) => void;
@@ -59,29 +46,24 @@ type AppStore = AppState & {
   setMarketData: (marketData: MarketData[]) => void;
   setSymbols: (symbols: string[]) => void;
   setNewChart: (value: number) => void;
+  setDownloadStatus: (value: string) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
   theme: "corporate",
   actionType: "Forex",
-  symbol: "BTC-USD",
-  timeFrame: "1 H",
-  timeDelta: 20,
+  symbol: "EUR-USD",
+  timeFrame: "1 h",
+  timeDelta: 30,
   timeBack: 0,
+  downloadStatus: "default",
 
   showCandles: false,
   showSma10: false,
   showSma20: false,
   showSma30: false,
-  showRsi: false,
   showBbUpper: false,
   showBbLower: false,
-  showMacd: false,
-  showMacdSignal: false,
-  showMacdHisto: false,
-  showDiPlus: false,
-  showDiMinus: false,
-  showAdx: false,
   showVolume: false,
   newChart: 0,
 
@@ -100,57 +82,7 @@ export const useAppStore = create<AppStore>((set) => ({
     { name: "Volume", value: "B/S/H" },
   ],
 
-  marketData: [
-    {
-      x: 1491004800000 + 43200000,
-      o: 31.11,
-      h: 33.04,
-      l: 30.58,
-      c: 32.03,
-      y: 1200,
-    },
-    {
-      x: 1491091200000 + 43200000,
-      o: 32.05,
-      h: 32.8,
-      l: 31.4,
-      c: 31.9,
-      y: 1200,
-    },
-    {
-      x: 1491177600000 + 43200000,
-      o: 31.9,
-      h: 34.77,
-      l: 30.35,
-      c: 33.1,
-      y: 2800,
-    },
-    {
-      x: 1491264000000 + 43200000,
-      o: 33.1,
-      h: 34.68,
-      l: 32.2,
-      c: 32.48,
-      y: 2100,
-    },
-    {
-      x: 1491350400000 + 43200000,
-      o: 32.5,
-      h: 33.49,
-      l: 28.72,
-      c: 30.46,
-      y: 3200,
-    },
-    {
-      x: 1491436800000 + 43200000,
-      o: 30.5,
-      h: 31.83,
-      l: 27.02,
-      c: 29.76,
-      y: 1700,
-    },
-  ],
-
+  marketData: [],
   symbols: ["EUR-USD", "GBP-USD", "USD-JPY", "USD-CHF", "AUD-USD"],
 
   setTheme: (theme: string) => set({ theme }),
@@ -164,15 +96,8 @@ export const useAppStore = create<AppStore>((set) => ({
   setShowSma10: (value) => set({ showSma10: value }),
   setShowSma20: (value) => set({ showSma20: value }),
   setShowSma30: (value) => set({ showSma30: value }),
-  setShowRsi: (value) => set({ showRsi: value }),
   setShowBbUpper: (value) => set({ showBbUpper: value }),
   setShowBbLower: (value) => set({ showBbLower: value }),
-  setShowMacd: (value) => set({ showMacd: value }),
-  setShowMacdSignal: (value) => set({ showMacdSignal: value }),
-  setShowMacdHisto: (value) => set({ showMacdHisto: value }),
-  setShowDiPlus: (value) => set({ showDiPlus: value }),
-  setShowDiMinus: (value) => set({ showDiMinus: value }),
-  setShowAdx: (value) => set({ showAdx: value }),
   setShowVolume: (value) => set({ showVolume: value }),
 
   setSummary: (summary) => set({ summary }),
@@ -180,4 +105,5 @@ export const useAppStore = create<AppStore>((set) => ({
   setMarketData: (marketData: MarketData[]) => set({ marketData }),
   setSymbols: (symbols: string[]) => set({ symbols }),
   setNewChart: (value) => set({ newChart: value }),
+  setDownloadStatus: (value) => set({ downloadStatus: value }),
 }));

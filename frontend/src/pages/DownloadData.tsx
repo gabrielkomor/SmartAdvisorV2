@@ -19,54 +19,70 @@ const DownloadData = (): JSX.Element => {
   const symbols = useAppStore((state) => state.symbols);
   const setSymbols = useAppStore((state) => state.setSymbols);
   const setNewChart = useAppStore((state) => state.setNewChart);
+  const downloadStatus = useAppStore((state) => state.downloadStatus);
+  const setDownloadStatus = useAppStore((state) => state.setDownloadStatus);
 
   const handleDownloadData = async (): Promise<void> => {
-    setMarketData([]);
-    setNewChart(useAppStore.getState().newChart + 1);
+    try {
+      setMarketData([]);
+      setNewChart(useAppStore.getState().newChart + 1);
 
-    const result = await downloadDataAPI(
-      actionType,
-      symbol,
-      timeFrame,
-      timeDelta,
-      timeBack,
-    );
+      const result = await downloadDataAPI(
+        actionType,
+        symbol,
+        timeFrame,
+        timeDelta,
+        timeBack,
+      );
 
-    const marketData = result.market_data.market_data.map((item) => ({
-      x: item.Datetime,
-      o: item.Open,
-      h: item.High,
-      l: item.Low,
-      c: item.Close,
-      y: item.Volume,
-    }));
+      const marketData = result.market_data.market_data.map((item) => ({
+        x: item.Datetime,
+        o: item.Open,
+        h: item.High,
+        l: item.Low,
+        c: item.Close,
+        y: item.Volume,
+      }));
 
-    setMarketData(marketData);
-    setNewChart(useAppStore.getState().newChart + 1);
+      setMarketData(marketData);
+      setNewChart(useAppStore.getState().newChart + 1);
 
-    setIndicators([
-      { name: "SMA", value: result.experts_signals.sma },
-      { name: "RSI", value: result.experts_signals.rsi },
-      { name: "BB", value: result.experts_signals.bb },
-      { name: "MACD", value: result.experts_signals.macd },
-      { name: "ADX", value: result.experts_signals.adx },
-      { name: "Volume", value: result.experts_signals.volume },
-    ]);
+      setIndicators([
+        { name: "SMA", value: result.experts_signals.sma },
+        { name: "RSI", value: result.experts_signals.rsi },
+        { name: "BB", value: result.experts_signals.bb },
+        { name: "MACD", value: result.experts_signals.macd },
+        { name: "ADX", value: result.experts_signals.adx },
+        { name: "Volume", value: result.experts_signals.volume },
+      ]);
 
-    setSummary([
-      {
-        name: "Additive",
-        value: result.aggregation_signals.additive_method,
-      },
-      {
-        name: "Majority",
-        value: result.aggregation_signals.majority_method,
-      },
-      {
-        name: "Median",
-        value: result.aggregation_signals.median_method,
-      },
-    ]);
+      setSummary([
+        {
+          name: "Additive",
+          value: result.aggregation_signals.additive_method,
+        },
+        {
+          name: "Majority",
+          value: result.aggregation_signals.majority_method,
+        },
+        {
+          name: "Median",
+          value: result.aggregation_signals.median_method,
+        },
+      ]);
+
+      setDownloadStatus("success");
+
+      setTimeout(() => {
+        setDownloadStatus("idle");
+      }, 1500);
+    } catch (error) {
+      setDownloadStatus("error");
+
+      setTimeout(() => {
+        setDownloadStatus("idle");
+      }, 1500);
+    }
   };
 
   return (
@@ -219,14 +235,28 @@ const DownloadData = (): JSX.Element => {
       <div className="flex justify-center">
         <button
           onClick={handleDownloadData}
-          className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3 items-center justify-center
-                      transition-all duration-200 
-                      active:scale-95 font-medium
-                      bg-primary text-primary-content hover:bg-secondary/50
-                      text-align-center shadow-xl
-                      text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer"
+          className={`
+    flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3
+    items-center justify-center
+    transition-all duration-200
+    active:scale-95 font-medium
+    text-align-center shadow-xl
+    text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer
+
+    ${
+      downloadStatus === "success"
+        ? "bg-success text-white"
+        : downloadStatus === "error"
+          ? "bg-error text-white"
+          : "bg-primary text-primary-content hover:bg-secondary/50"
+    }
+  `}
         >
-          Download Data
+          {downloadStatus === "success"
+            ? "Downloaded!"
+            : downloadStatus === "error"
+              ? "Download Error"
+              : "Download Data"}
         </button>
       </div>
     </div>
