@@ -39,24 +39,10 @@ const MainCandeChart = (): JSX.Element => {
   const setShowSma20 = useAppStore((state) => state.setShowSma20);
   const showSma30 = useAppStore((state) => state.showSma30);
   const setShowSma30 = useAppStore((state) => state.setShowSma30);
-  const showRsi = useAppStore((state) => state.showRsi);
-  const setShowRsi = useAppStore((state) => state.setShowRsi);
   const showBbUpper = useAppStore((state) => state.showBbUpper);
   const setShowBbUpper = useAppStore((state) => state.setShowBbUpper);
   const showBbLower = useAppStore((state) => state.showBbLower);
   const setShowBbLower = useAppStore((state) => state.setShowBbLower);
-  const showMacd = useAppStore((state) => state.showMacd);
-  const setShowMacd = useAppStore((state) => state.setShowMacd);
-  const showMacdSignal = useAppStore((state) => state.showMacdSignal);
-  const setShowMacdSignal = useAppStore((state) => state.setShowMacdSignal);
-  const showMacdHisto = useAppStore((state) => state.showMacdHisto);
-  const setShowMacdHisto = useAppStore((state) => state.setShowMacdHisto);
-  const showDiPlus = useAppStore((state) => state.showDiPlus);
-  const setShowDiPlus = useAppStore((state) => state.setShowDiPlus);
-  const showDiMinus = useAppStore((state) => state.showDiMinus);
-  const setShowDiMinus = useAppStore((state) => state.setShowDiMinus);
-  const showAdx = useAppStore((state) => state.showAdx);
-  const setShowAdx = useAppStore((state) => state.setShowAdx);
   const showVolume = useAppStore((state) => state.showVolume);
   const setShowVolume = useAppStore((state) => state.setShowVolume);
 
@@ -318,7 +304,7 @@ const MainCandeChart = (): JSX.Element => {
                 setShowBbUpper(!showBbUpper);
               } else if (legendItem.text === "BB Lower") {
                 setShowBbLower(!showBbLower);
-              } 
+              }
             },
           },
         },
