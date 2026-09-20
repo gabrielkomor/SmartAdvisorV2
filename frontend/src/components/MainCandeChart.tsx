@@ -239,14 +239,11 @@ const MainCandeChart = (): JSX.Element => {
       showSma30,
       showBbUpper,
       showBbLower,
+      sma10ToPlot,
+      sma20ToPlot,
+      sma30ToPlot,
       bollingerUpperToPlot,
-      bollingerLowerToPlot,
-      setShowCandles,
-      setShowSma10,
-      setShowSma20,
-      setShowSma30,
-      setShowBbUpper,
-      setShowBbLower,
+      bollingerLowerToPlot
     ],
   );
 

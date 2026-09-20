@@ -9,7 +9,6 @@ import yfinance as yf
 import pandas as pd
 from fastapi import HTTPException
 
-
 FOREX_SYMBOL_MAP = {
     "EUR-USD": "EURUSD=X",
     "GBP-USD": "GBPUSD=X",
@@ -17,6 +16,7 @@ FOREX_SYMBOL_MAP = {
     "USD-CHF": "USDCHF=X",
     "AUD-USD": "AUDUSD=X",
 }
+
 
 def websocket_worker(symbol: str) -> None:
     """_summary_

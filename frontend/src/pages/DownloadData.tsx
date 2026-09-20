@@ -76,7 +76,7 @@ const DownloadData = (): JSX.Element => {
       setTimeout(() => {
         setDownloadStatus("idle");
       }, 1500);
-    } catch (error) {
+    } catch {
       setDownloadStatus("error");
 
       setTimeout(() => {
