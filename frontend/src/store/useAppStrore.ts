@@ -10,11 +10,6 @@ type AppState = {
   timeBack: number;
 
   showCandles: boolean;
-  showSma10: boolean;
-  showSma20: boolean;
-  showSma30: boolean;
-  showBbUpper: boolean;
-  showBbLower: boolean;
   showVolume: boolean;
 
   summary: DecisionItem;
@@ -34,11 +29,6 @@ type AppStore = AppState & {
   setTimeBack: (timeBacd: number) => void;
 
   setShowCandles: (value: boolean) => void;
-  setShowSma10: (value: boolean) => void;
-  setShowSma20: (value: boolean) => void;
-  setShowSma30: (value: boolean) => void;
-  setShowBbUpper: (value: boolean) => void;
-  setShowBbLower: (value: boolean) => void;
   setShowVolume: (value: boolean) => void;
 
   setSummary: (summary: DecisionItem) => void;
@@ -59,11 +49,6 @@ export const useAppStore = create<AppStore>((set) => ({
   downloadStatus: "default",
 
   showCandles: false,
-  showSma10: false,
-  showSma20: false,
-  showSma30: false,
-  showBbUpper: false,
-  showBbLower: false,
   showVolume: false,
   newChart: 0,
 
@@ -93,11 +78,6 @@ export const useAppStore = create<AppStore>((set) => ({
   setTimeBack: (time: number) => set({ timeBack: time }),
 
   setShowCandles: (value) => set({ showCandles: value }),
-  setShowSma10: (value) => set({ showSma10: value }),
-  setShowSma20: (value) => set({ showSma20: value }),
-  setShowSma30: (value) => set({ showSma30: value }),
-  setShowBbUpper: (value) => set({ showBbUpper: value }),
-  setShowBbLower: (value) => set({ showBbLower: value }),
   setShowVolume: (value) => set({ showVolume: value }),
 
   setSummary: (summary) => set({ summary }),

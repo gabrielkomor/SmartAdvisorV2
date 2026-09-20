@@ -33,16 +33,6 @@ ChartJS.register(
 const MainCandeChart = (): JSX.Element => {
   const showCandles = useAppStore((state) => state.showCandles);
   const setShowCandles = useAppStore((state) => state.setShowCandles);
-  const showSma10 = useAppStore((state) => state.showSma10);
-  const setShowSma10 = useAppStore((state) => state.setShowSma10);
-  const showSma20 = useAppStore((state) => state.showSma20);
-  const setShowSma20 = useAppStore((state) => state.setShowSma20);
-  const showSma30 = useAppStore((state) => state.showSma30);
-  const setShowSma30 = useAppStore((state) => state.setShowSma30);
-  const showBbUpper = useAppStore((state) => state.showBbUpper);
-  const setShowBbUpper = useAppStore((state) => state.setShowBbUpper);
-  const showBbLower = useAppStore((state) => state.showBbLower);
-  const setShowBbLower = useAppStore((state) => state.setShowBbLower);
   const showVolume = useAppStore((state) => state.showVolume);
   const setShowVolume = useAppStore((state) => state.setShowVolume);
 
@@ -83,62 +73,6 @@ const MainCandeChart = (): JSX.Element => {
 
   const chartKey = `${resizeKey}-${newChart}-${symbol}-${marketData.length}-${priceBounds.min}-${priceBounds.max}`;
 
-  const {
-    sma10ToPlot,
-    sma20ToPlot,
-    sma30ToPlot,
-    bollingerUpperToPlot,
-    bollingerLowerToPlot,
-  } = useMemo(() => {
-    const dataLength = Math.max(marketData.length, 1);
-
-    return {
-      sma10ToPlot: marketData.map((d) => ({ x: d.x, y: d.c * 0.99 })),
-      sma20ToPlot: marketData.map((d) => ({ x: d.x, y: d.c * 0.995 })),
-      sma30ToPlot: marketData.map((d) => ({ x: d.x, y: d.c * 1.01 })),
-      rsiToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: 30 + ((i * 7) % 40),
-      })),
-      bollingerUpperToPlot: marketData.map((d) => ({
-        x: d.x,
-        y: d.h * 1.02,
-      })),
-      bollingerLowerToPlot: marketData.map((d) => ({
-        x: d.x,
-        y: d.l * 0.98,
-      })),
-      macdLineToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: Math.sin(i / 10) * 0.5,
-      })),
-      macdSignalToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: Math.sin(i / 10 + 0.5) * 0.4,
-      })),
-      macdHistogramToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: Math.sin(i / 10) * 0.2,
-      })),
-      plusDIToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: 20 + ((i * 3) % 10),
-      })),
-      minusDIToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: 15 + ((i * 5) % 10),
-      })),
-      adxLineToPlot: marketData.map((d, i) => ({
-        x: d.x,
-        y: 22 + ((i * 2) % 8),
-      })),
-      maxMacdBarThickness: Math.max(
-        2,
-        Math.floor(((window.innerWidth * 0.75) / dataLength) * 0.55),
-      ),
-    };
-  }, [marketData]);
-
   const priceData: ChartData<"candlestick" | "line" | "bar"> = useMemo(
     () => ({
       datasets: [
@@ -161,89 +95,11 @@ const MainCandeChart = (): JSX.Element => {
           yAxisID: "y",
           hidden: showCandles,
         },
-
-        // --- SMA 10 20 30 ---
-        {
-          type: "line",
-          label: "SMA 10",
-          data: sma10ToPlot,
-          borderColor: "rgb(229, 235, 52)",
-          backgroundColor: "rgba(215, 235, 52, 1)",
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.2,
-          yAxisID: "y",
-          hidden: !showSma10,
-        },
-
-        {
-          type: "line",
-          label: "SMA 20",
-          data: sma20ToPlot,
-          borderColor: "rgb(55, 52, 235)",
-          backgroundColor: "rgba(30, 52, 235)",
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.2,
-          yAxisID: "y",
-          hidden: !showSma20,
-        },
-
-        {
-          type: "line",
-          label: "SMA 30",
-          data: sma30ToPlot,
-          borderColor: "rgb(235, 83, 52)",
-          backgroundColor: "rgba(220, 83, 52)",
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.2,
-          yAxisID: "y",
-          hidden: !showSma30,
-        },
-
-        // --- Bollinger Bands ---
-        {
-          type: "line",
-          label: "BB Upper",
-          data: bollingerUpperToPlot,
-          borderColor: "rgba(0, 150, 255, 1)",
-          backgroundColor: "rgba(0, 150, 255, 0.3)",
-          borderWidth: 1,
-          pointRadius: 0,
-          tension: 0.2,
-          borderDash: [6, 6],
-          yAxisID: "y",
-          hidden: !showBbUpper,
-        },
-        {
-          type: "line",
-          label: "BB Lower",
-          data: bollingerLowerToPlot,
-          borderColor: "rgba(0, 150, 255, 1)",
-          backgroundColor: "rgba(0, 150, 255, 0.3)",
-          borderWidth: 1,
-          pointRadius: 0,
-          tension: 0.2,
-          borderDash: [6, 6],
-          yAxisID: "y",
-          hidden: !showBbLower,
-        },
       ],
     }),
     [
       marketData,
       showCandles,
-      showSma10,
-      showSma20,
-      showSma30,
-      showBbUpper,
-      showBbLower,
-      sma10ToPlot,
-      sma20ToPlot,
-      sma30ToPlot,
-      bollingerUpperToPlot,
-      bollingerLowerToPlot
     ],
   );
 
@@ -291,16 +147,6 @@ const MainCandeChart = (): JSX.Element => {
             onClick: (_event, legendItem) => {
               if (legendItem.text === "Price") {
                 setShowCandles(!showCandles);
-              } else if (legendItem.text === "SMA 10") {
-                setShowSma10(!showSma10);
-              } else if (legendItem.text === "SMA 20") {
-                setShowSma20(!showSma20);
-              } else if (legendItem.text === "SMA 30") {
-                setShowSma30(!showSma30);
-              } else if (legendItem.text === "BB Upper") {
-                setShowBbUpper(!showBbUpper);
-              } else if (legendItem.text === "BB Lower") {
-                setShowBbLower(!showBbLower);
               }
             },
           },
@@ -310,17 +156,7 @@ const MainCandeChart = (): JSX.Element => {
       priceBounds.min,
       priceBounds.max,
       showCandles,
-      showSma10,
-      showSma20,
-      showSma30,
-      showBbUpper,
-      showBbLower,
       setShowCandles,
-      setShowSma10,
-      setShowSma20,
-      setShowSma30,
-      setShowBbUpper,
-      setShowBbLower,
     ],
   );
 
