@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "initialize": "cd backend && uv sync && echo sync OK",
     "dev-frontend": "npm --prefix frontend run dev",
     "dev-backend": "cd backend && uv run main.py",
     "build": "npm --prefix frontend run build",
