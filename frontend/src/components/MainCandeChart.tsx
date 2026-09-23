@@ -33,8 +33,6 @@ ChartJS.register(
 const MainCandeChart = (): JSX.Element => {
   const showCandles = useAppStore((state) => state.showCandles);
   const setShowCandles = useAppStore((state) => state.setShowCandles);
-  const showVolume = useAppStore((state) => state.showVolume);
-  const setShowVolume = useAppStore((state) => state.setShowVolume);
 
   const marketData = useAppStore((state) => state.marketData);
   const newChart = useAppStore((state) => state.newChart);
@@ -103,22 +101,6 @@ const MainCandeChart = (): JSX.Element => {
     ],
   );
 
-  const volumeData = useMemo(
-    () => ({
-      datasets: [
-        {
-          type: "bar" as const,
-          label: "Volume",
-          data: marketData.map((d) => ({ x: d.x, y: d.y })),
-          yAxisID: "yVolume",
-          backgroundColor: "rgba(20, 20, 20, 0.9)",
-          hidden: showVolume,
-        },
-      ],
-    }),
-    [marketData, showVolume],
-  );
-
   const priceOptions = useMemo(
     () =>
       ({
@@ -160,55 +142,6 @@ const MainCandeChart = (): JSX.Element => {
     ],
   );
 
-  const volumeOptions = useMemo(
-    () =>
-      ({
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: false,
-        scales: {
-          x: {
-            type: "time",
-            time: {
-              unit: "day",
-            },
-            offset: true,
-            ticks: {
-              source: "data",
-              autoSkip: false,
-              maxRotation: 0,
-            },
-            grid: {
-              offset: true,
-            },
-          },
-          y: {
-            beginAtZero: true,
-            display: false,
-            grid: {
-              display: false,
-            },
-            ticks: {
-              display: false,
-            },
-            border: {
-              display: false,
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            onClick: (_event, legendItem) => {
-              if (legendItem.text === "Volume") {
-                setShowVolume(!showVolume);
-              }
-            },
-          },
-        },
-      }) satisfies import("chart.js").ChartOptions<"bar">,
-    [showVolume, setShowVolume],
-  );
-
   if (marketData.length === 0) {
     return (
       <div className="flex h-full items-center justify-center text-base-content/60">
@@ -219,21 +152,12 @@ const MainCandeChart = (): JSX.Element => {
 
   return (
     <>
-      <div className="h-[79%]">
+      <div className="h-[100%]">
         <Chart
           type="candlestick"
           key={`price-${chartKey}`}
           data={priceData}
           options={priceOptions}
-        />
-      </div>
-
-      <div className="h-[19%]">
-        <Chart
-          type="bar"
-          key={`volume-${chartKey}`}
-          data={volumeData}
-          options={volumeOptions}
         />
       </div>
     </>

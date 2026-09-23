@@ -8,10 +8,7 @@ type AppState = {
   timeFrame: string;
   timeDelta: number;
   timeBack: number;
-
   showCandles: boolean;
-  showVolume: boolean;
-
   summary: DecisionItem;
   indicators: DecisionItem;
   marketData: MarketData[];
@@ -27,10 +24,7 @@ type AppStore = AppState & {
   setTimeFrame: (timeFrame: string) => void;
   setTimeDelta: (timeDelta: number) => void;
   setTimeBack: (timeBacd: number) => void;
-
   setShowCandles: (value: boolean) => void;
-  setShowVolume: (value: boolean) => void;
-
   setSummary: (summary: DecisionItem) => void;
   setIndicators: (indicators: DecisionItem) => void;
   setMarketData: (marketData: MarketData[]) => void;
@@ -76,10 +70,7 @@ export const useAppStore = create<AppStore>((set) => ({
   setTimeFrame: (time: string) => set({ timeFrame: time }),
   setTimeDelta: (time: number) => set({ timeDelta: time }),
   setTimeBack: (time: number) => set({ timeBack: time }),
-
   setShowCandles: (value) => set({ showCandles: value }),
-  setShowVolume: (value) => set({ showVolume: value }),
-
   setSummary: (summary) => set({ summary }),
   setIndicators: (indicators) => set({ indicators }),
   setMarketData: (marketData: MarketData[]) => set({ marketData }),
