@@ -56,9 +56,53 @@ podman/docker compose up
 ```
 
 ### Tip
- 
+
 - For more usefull commands you can check `package.json` file.
 
 ## Application Apperance
 
-- [WIP]
+- Main application window containing the window for downloading historical stock market data:
+
+![Download Data Window](./sample_screens/corporate_download_data.PNG)
+
+- Main application window showing an interactive candlestick chart created based on previously downloaded data:
+
+![Candle Chart Window](./sample_screens/corporate_candle_chart.PNG)
+
+- Main application window showing signals transmitted by applications in the past:
+
+![Signals History](./sample_screens/corporate_signals_history.PNG)
+
+- Main application window showing the percentage values of the signal strength transmitted by all expert systems:
+
+![History Decisions](./sample_screens/corporate_history_decisions.PNG)
+
+- The same data shown in a line graph:
+
+![Lienar Decisions](./sample_screens/corporate_linear_decisions.PNG)
+
+- Application theme settings:
+
+![Theme Settings](./sample_screens/corporate_settings.PNG)
+
+- Download data window in "Dim" theme:
+
+![Download Data Dim](./sample_screens/dim_download_data.PNG)
+
+- Download data window in "Dim" theme, mobile version 1/2:
+
+<p align="center">
+  <img src="./sample_screens/dim_mobile_1.PNG" alt="Download Data Dim Mobile 1">
+</p>
+
+- Download data window in "Dim" theme, mobile version 2/2:
+
+<p align="center">
+  <img src="./sample_screens/dim_mobile_2.PNG" alt="Download Data Dim Mobile 2">
+</p>
+
+- Signals history page in "Dim" theme on mobile:
+
+<p align="center">
+  <img src="./sample_screens/dim_mobile_signals_historyPNG.PNG" alt="Signals History Dim Mobile">
+</p>

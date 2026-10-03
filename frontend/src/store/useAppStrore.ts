@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { DecisionItem, MarketData } from "../types/decision";
+import type { Decision, DecisionItem, MarketData } from "../types/decision";
 
 type AppState = {
   theme: string;
@@ -29,6 +29,10 @@ type AppState = {
   linearBuyData: number[];
   linearSellData: number[];
   linearHoldData: number[];
+
+  histSignalsRow1: Decision[];
+  histSignalsRow2: Decision[];
+  histSignalsRow3: Decision[];
 };
 
 type AppStore = AppState & {
@@ -59,6 +63,10 @@ type AppStore = AppState & {
   setLinearBuyData: (data: number[]) => void;
   setLinearSellData: (data: number[]) => void;
   setLinearHoldData: (data: number[]) => void;
+
+  setHistSignalsRow1: (data: Decision[]) => void;
+  setHistSignalsRow2: (data: Decision[]) => void;
+  setHistSignalsRow3: (data: Decision[]) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -106,6 +114,10 @@ export const useAppStore = create<AppStore>((set) => ({
   linearSellData: [],
   linearHoldData: [],
 
+  histSignalsRow1: [],
+  histSignalsRow2: [],
+  histSignalsRow3: [],
+
   setTheme: (theme: string) => set({ theme }),
   setActionType: (type: "Forex" | "Stock" | "ETF") => set({ actionType: type }),
   setSymbol: (symbol: string) => set({ symbol }),
@@ -133,4 +145,8 @@ export const useAppStore = create<AppStore>((set) => ({
   setLinearBuyData: (data) => set({ linearBuyData: data }),
   setLinearSellData: (data) => set({ linearSellData: data }),
   setLinearHoldData: (data) => set({ linearHoldData: data }),
+
+  setHistSignalsRow1: (data) => set({ histSignalsRow1: data }),
+  setHistSignalsRow2: (data) => set({ histSignalsRow2: data }),
+  setHistSignalsRow3: (data) => set({ histSignalsRow3: data }),
 }));

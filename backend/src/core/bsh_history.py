@@ -1,11 +1,23 @@
+"""
+This file contains functions for processing historical data and calculating trading signals.
+"""
+
 from datetime import datetime, timedelta
 
 import pandas as pd
 import numpy as np
 
-from src.core.interpretation_methods import additive_method, majority_vote_method, median_method, percentage_method_values
-from src.core.calculate_strategies_methods import calculate_strategies, calculate_signals, interpret_strategies_result
-
+from src.core.interpretation_methods import (
+    additive_method,
+    majority_vote_method,
+    median_method,
+    percentage_method_values,
+)
+from src.core.calculate_strategies_methods import (
+    calculate_strategies,
+    calculate_signals,
+    interpret_strategies_result,
+)
 
 
 def _remove_days(df: pd.DataFrame, days: int) -> pd.DataFrame:
@@ -21,8 +33,7 @@ def _remove_days(df: pd.DataFrame, days: int) -> pd.DataFrame:
     return df[df["Datetime"] < cutoff_date]
 
 
-
-def calculate_history_data(data: pd.DataFrame, shape: int) -> np.ndarray:
+def calculate_history_data(data: pd.DataFrame, shape: int) -> tuple[np.ndarray, int]:
     """
     Calculate historical trading signals for given data.
     """
@@ -43,15 +54,13 @@ def calculate_history_data(data: pd.DataFrame, shape: int) -> np.ndarray:
 
         if last_dt == previous_day:
             continue
-        else:
-            previous_day = last_dt
+
+        previous_day = last_dt
 
         strategies = calculate_strategies(data=filtered)
 
-        signals_buy, signals_sell, signals_hold = (
-            calculate_signals(
-                data=filtered, strategies=strategies
-            )
+        signals_buy, signals_sell, signals_hold = calculate_signals(
+            data=filtered, strategies=strategies
         )
 
         interpret_strategies_result(
@@ -60,18 +69,10 @@ def calculate_history_data(data: pd.DataFrame, shape: int) -> np.ndarray:
             signals_hold=signals_hold,
         )
 
-        array[i][0] = percentage_method_values(
-            signals_buy, signals_sell, signals_hold
-        )
-        array[i][1] = additive_method(
-            signals_buy, signals_sell, signals_hold
-        )
-        array[i][2] = majority_vote_method(
-            signals_buy, signals_sell, signals_hold
-        )
-        array[i][3] = median_method(
-            signals_buy, signals_sell, signals_hold
-        )
+        array[i][0] = percentage_method_values(signals_buy, signals_sell, signals_hold)
+        array[i][1] = additive_method(signals_buy, signals_sell, signals_hold)
+        array[i][2] = majority_vote_method(signals_buy, signals_sell, signals_hold)
+        array[i][3] = median_method(signals_buy, signals_sell, signals_hold)
 
     mask = np.all(array == 0, axis=(1, 2))
     array = array[~mask]

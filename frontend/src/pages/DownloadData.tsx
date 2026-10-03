@@ -36,6 +36,10 @@ const DownloadData = (): JSX.Element => {
   const setLinearSellData = useAppStore((state) => state.setLinearSellData);
   const setLinearHoldData = useAppStore((state) => state.setLinearHoldData);
 
+  const setHistSignalsRow1 = useAppStore((state) => state.setHistSignalsRow1);
+  const setHistSignalsRow2 = useAppStore((state) => state.setHistSignalsRow2);
+  const setHistSignalsRow3 = useAppStore((state) => state.setHistSignalsRow3);
+
   const generateLabels = (n: number): number[] => {
     return Array.from({ length: n }, (_, i) => i + 1);
   };
@@ -102,6 +106,10 @@ const DownloadData = (): JSX.Element => {
       setLinearBuyData(result.history_signals.history.probabilities.buy);
       setLinearSellData(result.history_signals.history.probabilities.sell);
       setLinearHoldData(result.history_signals.history.probabilities.hold);
+
+      setHistSignalsRow1(result.history_signals.history.additive.decisions);
+      setHistSignalsRow2(result.history_signals.history.majority.decisions);
+      setHistSignalsRow3(result.history_signals.history.median.decisions);
 
       setDownloadStatus("success");
 

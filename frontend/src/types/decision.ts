@@ -41,11 +41,15 @@ export type SignalTriple = {
   sell: number[];
 };
 
+export type DecisionSignals = {
+  decisions: Decision[];
+};
+
 export type HistorySignal = {
   probabilities: SignalTriple;
-  additive: SignalTriple;
-  majority: SignalTriple;
-  median: SignalTriple;
+  additive: DecisionSignals;
+  majority: DecisionSignals;
+  median: DecisionSignals;
 };
 
 export type HistorySignalsResponse = {
