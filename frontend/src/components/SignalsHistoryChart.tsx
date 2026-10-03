@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 
 import { Chart } from "react-chartjs-2";
+import { useAppStore } from "../store/useAppStrore";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,29 +23,36 @@ ChartJS.register(
   Legend,
 );
 import DecisionRow from "./DecisionRow";
-import type { Decision } from "../types/decision";
 
 const SignalsHistoryChart = (): JSX.Element => {
+  const linearBuyLabels = useAppStore((state) => state.linearBuyLabels);
+  const linearBuyData = useAppStore((state) => state.linearBuyData);
+  const linearSellData = useAppStore((state) => state.linearSellData);
+  const linearHoldData = useAppStore((state) => state.linearHoldData);
+  const row1 = useAppStore((state) => state.histSignalsRow1);
+  const row2 = useAppStore((state) => state.histSignalsRow2);
+  const row3 = useAppStore((state) => state.histSignalsRow3);
+
   const data = {
-    labels: [1, 2, 3, 4, 5],
+    labels: linearBuyLabels,
     datasets: [
       {
         label: "Buy",
-        data: [40, 50, 20, 10, 90],
+        data: linearBuyData,
         borderColor: "rgba(0, 160, 0, 1)",
         backgroundColor: "rgba(0, 160, 0, 0.3)",
         tension: 0.3,
       },
       {
         label: "Sell",
-        data: [20, 30, 0, 70, 0],
+        data: linearSellData,
         borderColor: "rgba(210, 0, 0, 1)",
         backgroundColor: "rgba(210, 0, 0, 0.3)",
         tension: 0.3,
       },
       {
         label: "Hold",
-        data: [40, 20, 80, 20, 10],
+        data: linearHoldData,
         borderColor: "rgba(120, 120, 120, 1)",
         backgroundColor: "rgba(120, 120, 120, 0.3)",
         tension: 0.3,
@@ -62,10 +70,6 @@ const SignalsHistoryChart = (): JSX.Element => {
       },
     },
   };
-
-  const row1: Decision[] = ["hold", "hold", "buy", "hold", "sell", "buy"];
-  const row2: Decision[] = ["hold", "buy", "sell", "buy", "hold", "buy"];
-  const row3: Decision[] = ["buy", "hold", "hold", "sell", "sell", "buy"];
 
   return (
     <>

@@ -1,7 +1,10 @@
 import type { JSX } from "react";
-import { decisionColor, summary } from "../components/layoutDecision";
+import { decisionColor } from "../components/layoutDecision";
+import { useAppStore } from "../store/useAppStrore";
 
 const LayoutBottomSummary = (): JSX.Element => {
+  const summary = useAppStore((state) => state.summary);
+
   return (
     <aside className="flex h-28 w-full items-center bg-base-300 p-2 md:p-1 lg:p-1 rounded-3xl mt-2 shadow-xl overflow-hidden">
       <ul className="grid h-full w-full grid-cols-3 gap-2 sm:gap-3 lg:gap-4 sm:p-1 md:p-2 lg:p-3">

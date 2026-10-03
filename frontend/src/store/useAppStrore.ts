@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { Decision, DecisionItem, MarketData } from "../types/decision";
 
 type AppState = {
   theme: string;
@@ -7,21 +8,31 @@ type AppState = {
   timeFrame: string;
   timeDelta: number;
   timeBack: number;
-
   showCandles: boolean;
-  showSma10: boolean;
-  showSma20: boolean;
-  showSma30: boolean;
-  showRsi: boolean;
-  showBbUpper: boolean;
-  showBbLower: boolean;
-  showMacd: boolean;
-  showMacdSignal: boolean;
-  showMacdHisto: boolean;
-  showDiPlus: boolean;
-  showDiMinus: boolean;
-  showAdx: boolean;
-  showVolume: boolean;
+  summary: DecisionItem;
+  indicators: DecisionItem;
+  marketData: MarketData[];
+  symbols: string[];
+  newChart: number;
+  downloadStatus: string;
+
+  histBuyLabels: number[];
+  histSellLabels: number[];
+  histHoldLabels: number[];
+  histBuyData: number[];
+  histSellData: number[];
+  histHoldData: number[];
+
+  linearBuyLabels: number[];
+  linearSellLabels: number[];
+  linearHoldLabels: number[];
+  linearBuyData: number[];
+  linearSellData: number[];
+  linearHoldData: number[];
+
+  histSignalsRow1: Decision[];
+  histSignalsRow2: Decision[];
+  histSignalsRow3: Decision[];
 };
 
 type AppStore = AppState & {
@@ -31,45 +42,81 @@ type AppStore = AppState & {
   setTimeFrame: (timeFrame: string) => void;
   setTimeDelta: (timeDelta: number) => void;
   setTimeBack: (timeBacd: number) => void;
-
   setShowCandles: (value: boolean) => void;
-  setShowSma10: (value: boolean) => void;
-  setShowSma20: (value: boolean) => void;
-  setShowSma30: (value: boolean) => void;
-  setShowRsi: (value: boolean) => void;
-  setShowBbUpper: (value: boolean) => void;
-  setShowBbLower: (value: boolean) => void;
-  setShowMacd: (value: boolean) => void;
-  setShowMacdSignal: (value: boolean) => void;
-  setShowMacdHisto: (value: boolean) => void;
-  setShowDiPlus: (value: boolean) => void;
-  setShowDiMinus: (value: boolean) => void;
-  setShowAdx: (value: boolean) => void;
-  setShowVolume: (value: boolean) => void;
+  setSummary: (summary: DecisionItem) => void;
+  setIndicators: (indicators: DecisionItem) => void;
+  setMarketData: (marketData: MarketData[]) => void;
+  setSymbols: (symbols: string[]) => void;
+  setNewChart: (value: number) => void;
+  setDownloadStatus: (value: string) => void;
+
+  setHistBuyLabels: (data: number[]) => void;
+  setHistSellLabels: (data: number[]) => void;
+  setHistHoldLabels: (data: number[]) => void;
+  setHistBuyData: (data: number[]) => void;
+  setHistSellData: (data: number[]) => void;
+  setHistHoldData: (data: number[]) => void;
+
+  setLinearBuyLabels: (data: number[]) => void;
+  setLinearSellLabels: (data: number[]) => void;
+  setLinearHoldLabels: (data: number[]) => void;
+  setLinearBuyData: (data: number[]) => void;
+  setLinearSellData: (data: number[]) => void;
+  setLinearHoldData: (data: number[]) => void;
+
+  setHistSignalsRow1: (data: Decision[]) => void;
+  setHistSignalsRow2: (data: Decision[]) => void;
+  setHistSignalsRow3: (data: Decision[]) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
   theme: "corporate",
   actionType: "Forex",
-  symbol: "BTC-USD",
-  timeFrame: "1 H",
-  timeDelta: 20,
+  symbol: "EUR-USD",
+  timeFrame: "1 h",
+  timeDelta: 30,
   timeBack: 0,
+  downloadStatus: "default",
 
   showCandles: false,
-  showSma10: false,
-  showSma20: false,
-  showSma30: false,
-  showRsi: false,
-  showBbUpper: false,
-  showBbLower: false,
-  showMacd: false,
-  showMacdSignal: false,
-  showMacdHisto: false,
-  showDiPlus: false,
-  showDiMinus: false,
-  showAdx: false,
   showVolume: false,
+  newChart: 0,
+
+  summary: [
+    { name: "Additive", value: "B/S/H" },
+    { name: "Majority", value: "B/S/H" },
+    { name: "Median", value: "B/S/H" },
+  ],
+
+  indicators: [
+    { name: "SMA", value: "B/S/H" },
+    { name: "RSI", value: "B/S/H" },
+    { name: "BB", value: "B/S/H" },
+    { name: "MACD", value: "B/S/H" },
+    { name: "ADX", value: "B/S/H" },
+    { name: "Volume", value: "B/S/H" },
+  ],
+
+  marketData: [],
+  symbols: ["EUR-USD", "GBP-USD", "USD-JPY", "USD-CHF", "AUD-USD"],
+
+  histBuyLabels: [],
+  histSellLabels: [],
+  histHoldLabels: [],
+  histBuyData: [],
+  histSellData: [],
+  histHoldData: [],
+
+  linearBuyLabels: [],
+  linearSellLabels: [],
+  linearHoldLabels: [],
+  linearBuyData: [],
+  linearSellData: [],
+  linearHoldData: [],
+
+  histSignalsRow1: [],
+  histSignalsRow2: [],
+  histSignalsRow3: [],
 
   setTheme: (theme: string) => set({ theme }),
   setActionType: (type: "Forex" | "Stock" | "ETF") => set({ actionType: type }),
@@ -77,19 +124,29 @@ export const useAppStore = create<AppStore>((set) => ({
   setTimeFrame: (time: string) => set({ timeFrame: time }),
   setTimeDelta: (time: number) => set({ timeDelta: time }),
   setTimeBack: (time: number) => set({ timeBack: time }),
-
   setShowCandles: (value) => set({ showCandles: value }),
-  setShowSma10: (value) => set({ showSma10: value }),
-  setShowSma20: (value) => set({ showSma20: value }),
-  setShowSma30: (value) => set({ showSma30: value }),
-  setShowRsi: (value) => set({ showRsi: value }),
-  setShowBbUpper: (value) => set({ showBbUpper: value }),
-  setShowBbLower: (value) => set({ showBbLower: value }),
-  setShowMacd: (value) => set({ showMacd: value }),
-  setShowMacdSignal: (value) => set({ showMacdSignal: value }),
-  setShowMacdHisto: (value) => set({ showMacdHisto: value }),
-  setShowDiPlus: (value) => set({ showDiPlus: value }),
-  setShowDiMinus: (value) => set({ showDiMinus: value }),
-  setShowAdx: (value) => set({ showAdx: value }),
-  setShowVolume: (value) => set({ showVolume: value }),
+  setSummary: (summary) => set({ summary }),
+  setIndicators: (indicators) => set({ indicators }),
+  setMarketData: (marketData: MarketData[]) => set({ marketData }),
+  setSymbols: (symbols: string[]) => set({ symbols }),
+  setNewChart: (value) => set({ newChart: value }),
+  setDownloadStatus: (value) => set({ downloadStatus: value }),
+
+  setHistBuyLabels: (data) => set({ histBuyLabels: data }),
+  setHistSellLabels: (data) => set({ histSellLabels: data }),
+  setHistHoldLabels: (data) => set({ histHoldLabels: data }),
+  setHistBuyData: (data) => set({ histBuyData: data }),
+  setHistSellData: (data) => set({ histSellData: data }),
+  setHistHoldData: (data) => set({ histHoldData: data }),
+
+  setLinearBuyLabels: (data) => set({ linearBuyLabels: data }),
+  setLinearSellLabels: (data) => set({ linearSellLabels: data }),
+  setLinearHoldLabels: (data) => set({ linearHoldLabels: data }),
+  setLinearBuyData: (data) => set({ linearBuyData: data }),
+  setLinearSellData: (data) => set({ linearSellData: data }),
+  setLinearHoldData: (data) => set({ linearHoldData: data }),
+
+  setHistSignalsRow1: (data) => set({ histSignalsRow1: data }),
+  setHistSignalsRow2: (data) => set({ histSignalsRow2: data }),
+  setHistSignalsRow3: (data) => set({ histSignalsRow3: data }),
 }));
