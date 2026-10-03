@@ -72,18 +72,11 @@ type AppStore = AppState & {
 export const useAppStore = create<AppStore>((set) => ({
   theme: "corporate",
   actionType: "Forex",
-<<<<<<< HEAD
-  symbol: "BTC-USD",
-  timeFrame: "1 H",
-  timeDelta: 20,
-  timeBack: 0,
-=======
   symbol: "EUR-USD",
   timeFrame: "1 h",
   timeDelta: 30,
   timeBack: 0,
   downloadStatus: "default",
->>>>>>> develop
 
   showCandles: false,
   showVolume: false,

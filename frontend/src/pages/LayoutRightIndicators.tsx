@@ -1,11 +1,7 @@
 import type { JSX } from "react";
-<<<<<<< HEAD
-import { decisionColor, indicators } from "../components/layoutDecision";
-=======
 import { decisionColor } from "../components/layoutDecision";
 import { useAppStore } from "../store/useAppStrore";
 import type { Decision } from "../types/decision";
->>>>>>> develop
 
 const LayoutRightIndicators = (): JSX.Element => {
   const indicators = useAppStore((state) => state.indicators);

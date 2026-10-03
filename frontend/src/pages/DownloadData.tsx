@@ -188,18 +188,11 @@ const DownloadData = (): JSX.Element => {
             value={symbol}
             onChange={(e) => setSymbol(e.target.value)}
           >
-<<<<<<< HEAD
-            <option className="font-bold">NVDA</option>
-            <option className="font-bold">AMD</option>
-            <option className="font-bold">INTC</option>
-            <option className="font-bold">BTC-USD</option>
-=======
             {symbols.map((s) => (
               <option key={s} className="font-bold">
                 {s}
               </option>
             ))}
->>>>>>> develop
           </select>
         </div>
 

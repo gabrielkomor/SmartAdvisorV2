@@ -1,9 +1,6 @@
 import type { JSX } from "react";
 import { Chart } from "react-chartjs-2";
-<<<<<<< HEAD
-=======
 import { useAppStore } from "../store/useAppStrore";
->>>>>>> develop
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,14 +21,6 @@ ChartJS.register(
 );
 
 const HistoryDecisionsCharts = (): JSX.Element => {
-<<<<<<< HEAD
-  const data_buy = {
-    labels: [1, 2, 3, 4, 5],
-    datasets: [
-      {
-        label: "Buy",
-        data: [50, 12, 90, 14, 13],
-=======
   const histBuyLabels = useAppStore((state) => state.histBuyLabels);
   const histSellLabels = useAppStore((state) => state.histSellLabels);
   const histHoldLabels = useAppStore((state) => state.histHoldLabels);
@@ -45,7 +34,6 @@ const HistoryDecisionsCharts = (): JSX.Element => {
       {
         label: "Buy",
         data: histBuyData,
->>>>>>> develop
         backgroundColor: "rgba(0, 160, 0, 1)",
         borderWidth: 1,
       },
@@ -53,19 +41,11 @@ const HistoryDecisionsCharts = (): JSX.Element => {
   };
 
   const data_sell = {
-<<<<<<< HEAD
-    labels: [1, 2, 3, 4, 5],
-    datasets: [
-      {
-        label: "Sell",
-        data: [50, 12, 90, 14, 13],
-=======
     labels: histSellLabels,
     datasets: [
       {
         label: "Sell",
         data: histSellData,
->>>>>>> develop
         backgroundColor: "rgba(210, 0, 0, 1)",
         borderWidth: 1,
       },
@@ -73,19 +53,11 @@ const HistoryDecisionsCharts = (): JSX.Element => {
   };
 
   const data_hold = {
-<<<<<<< HEAD
-    labels: [1, 2, 3, 4, 5],
-    datasets: [
-      {
-        label: "Hold",
-        data: [50, 12, 90, 14, 13],
-=======
     labels: histHoldLabels,
     datasets: [
       {
         label: "Hold",
         data: histHoldData,
->>>>>>> develop
         backgroundColor: "rgba(120, 120, 120, 1)",
         borderWidth: 1,
       },

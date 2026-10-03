@@ -1,10 +1,6 @@
 import type { JSX } from "react";
-<<<<<<< HEAD
-import { decisionColor, summary } from "../components/layoutDecision";
-=======
 import { decisionColor } from "../components/layoutDecision";
 import { useAppStore } from "../store/useAppStrore";
->>>>>>> develop
 
 const LayoutBottomSummary = (): JSX.Element => {
   const summary = useAppStore((state) => state.summary);
