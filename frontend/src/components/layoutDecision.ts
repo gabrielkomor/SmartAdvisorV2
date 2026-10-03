@@ -5,17 +5,8 @@ import {
   History,
   LineChart,
   Settings,
-  type LucideIcon,
 } from "lucide-react";
-
-type NavItems = Array<{
-  name: string;
-  path: string;
-  icon: LucideIcon;
-  divider: boolean;
-}>;
-type Decision = "BUY" | "SELL" | "HOLD";
-type DecisionItem = Array<{ name: string; value: Decision }>;
+import type { Decision, NavItems } from "../types/decision";
 
 export const decisionColor = (value: Decision): string => {
   switch (value) {
@@ -25,23 +16,14 @@ export const decisionColor = (value: Decision): string => {
       return "btn-error text-white";
     case "HOLD":
       return "btn-warning text-black";
+    case "BUY/SELL":
+      return "btn text-black bg-gradient-to-r from-green-500 to-red-500";
+    case "B/S/H":
+      return "btn text-black bg-gradient-to-r from-green-500 via-red-500 to-yellow-500";
+    case "BUY/SELL/HOLD":
+      return "btn text-black bg-gradient-to-r from-green-500 via-red-500 to-yellow-500";
   }
 };
-
-export const summary: DecisionItem = [
-  { name: "Additive", value: "HOLD" },
-  { name: "Majority", value: "BUY" },
-  { name: "Median", value: "BUY" },
-];
-
-export const indicators: DecisionItem = [
-  { name: "SMA", value: "BUY" },
-  { name: "RSI", value: "HOLD" },
-  { name: "BB", value: "HOLD" },
-  { name: "MACD", value: "HOLD" },
-  { name: "ADX", value: "BUY" },
-  { name: "Volume", value: "SELL" },
-];
 
 export const navItems: NavItems = [
   {

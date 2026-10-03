@@ -1,5 +1,9 @@
 import type { JSX } from "react";
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
+=======
+import { useEffect, useMemo, useState } from "react";
+>>>>>>> develop
 import { Chart } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import { useAppStore } from "../store/useAppStrore";
@@ -33,6 +37,7 @@ ChartJS.register(
 const MainCandeChart = (): JSX.Element => {
   const showCandles = useAppStore((state) => state.showCandles);
   const setShowCandles = useAppStore((state) => state.setShowCandles);
+<<<<<<< HEAD
   const showSma10 = useAppStore((state) => state.showSma10);
   const setShowSma10 = useAppStore((state) => state.setShowSma10);
   const showSma20 = useAppStore((state) => state.showSma20);
@@ -59,6 +64,12 @@ const MainCandeChart = (): JSX.Element => {
   const setShowAdx = useAppStore((state) => state.setShowAdx);
   const showVolume = useAppStore((state) => state.showVolume);
   const setShowVolume = useAppStore((state) => state.setShowVolume);
+=======
+
+  const marketData = useAppStore((state) => state.marketData);
+  const newChart = useAppStore((state) => state.newChart);
+  const symbol = useAppStore((state) => state.symbol);
+>>>>>>> develop
 
   const [resizeKey, setResizeKey] = useState(0);
 
@@ -71,6 +82,7 @@ const MainCandeChart = (): JSX.Element => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+<<<<<<< HEAD
   const dataToPlot = [
     { x: 1491004800000 + 43200000, o: 31.11, h: 33.04, l: 30.58, c: 32.03 },
     { x: 1491091200000 + 43200000, o: 32.05, h: 32.8, l: 31.4, c: 31.9 },
@@ -510,10 +522,120 @@ const MainCandeChart = (): JSX.Element => {
         <Chart
           type="candlestick"
           key={resizeKey}
+=======
+  const priceBounds = useMemo(() => {
+    if (marketData.length === 0) {
+      return { min: undefined, max: undefined };
+    }
+
+    let min = Infinity;
+    let max = -Infinity;
+
+    for (const point of marketData) {
+      min = Math.min(min, point.l);
+      max = Math.max(max, point.h);
+    }
+
+    const range = max - min;
+    const padding =
+      range > 0 ? range * 0.08 : Math.max(Math.abs(max) * 0.001, 0.0001);
+
+    return { min: min - padding, max: max + padding };
+  }, [marketData]);
+
+  const chartKey = `${resizeKey}-${newChart}-${symbol}-${marketData.length}-${priceBounds.min}-${priceBounds.max}`;
+
+  const priceData: ChartData<"candlestick" | "line" | "bar"> = useMemo(
+    () => ({
+      datasets: [
+        {
+          type: "candlestick" as const,
+          label: "Price",
+          data: marketData,
+          borderColor: "rgba(0, 150, 136, 1)",
+          borderColors: {
+            up: "rgba(0, 200, 5, 1)",
+            down: "rgba(200, 0, 0, 1)",
+            unchanged: "rgba(100, 100, 100, 1)",
+          },
+          backgroundColors: {
+            up: "rgba(0, 200, 5, 0.3)",
+            down: "rgba(200, 0, 0, 0.3)",
+            unchanged: "rgba(100, 100, 100, 0.3)",
+          },
+          backgroundColor: "rgba(140, 140, 140, 1)",
+          yAxisID: "y",
+          hidden: showCandles,
+        },
+      ],
+    }),
+    [
+      marketData,
+      showCandles,
+    ],
+  );
+
+  const priceOptions = useMemo(
+    () =>
+      ({
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        scales: {
+          x: {
+            type: "time",
+            time: {
+              unit: "day",
+            },
+            offset: true,
+            grid: {
+              offset: true,
+            },
+          },
+          y: {
+            beginAtZero: false,
+            min: priceBounds.min,
+            max: priceBounds.max,
+          },
+        },
+        plugins: {
+          legend: {
+            onClick: (_event, legendItem) => {
+              if (legendItem.text === "Price") {
+                setShowCandles(!showCandles);
+              }
+            },
+          },
+        },
+      }) satisfies import("chart.js").ChartOptions<"candlestick">,
+    [
+      priceBounds.min,
+      priceBounds.max,
+      showCandles,
+      setShowCandles,
+    ],
+  );
+
+  if (marketData.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center text-base-content/60">
+        Download data to display the chart
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="h-[100%]">
+        <Chart
+          type="candlestick"
+          key={`price-${chartKey}`}
+>>>>>>> develop
           data={priceData}
           options={priceOptions}
         />
       </div>
+<<<<<<< HEAD
 
       <div className="h-[19%]">
         <Chart
@@ -523,6 +645,8 @@ const MainCandeChart = (): JSX.Element => {
           options={volumeOptions}
         />
       </div>
+=======
+>>>>>>> develop
     </>
   );
 };

@@ -13,8 +13,8 @@ class DownloadData(BaseModel):
     type: str
     symbol: str
     time_frame: str
-    time_delta: str
-    time_back: str
+    time_delta: int
+    time_back: int
 
 
 class DownloadDataResposne(BaseModel):
@@ -25,3 +25,4 @@ class DownloadDataResposne(BaseModel):
     market_data: dict
     aggregation_signals: dict
     experts_signals: dict
+    history_signals: dict

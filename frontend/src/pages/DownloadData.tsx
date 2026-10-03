@@ -1,5 +1,6 @@
 import { type JSX } from "react";
 import { useAppStore } from "../store/useAppStrore";
+import { downloadDataAPI } from "../services/downloadDataAPI";
 
 const DownloadData = (): JSX.Element => {
   const actionType = useAppStore((state) => state.actionType);
@@ -12,6 +13,117 @@ const DownloadData = (): JSX.Element => {
   const setTimeDelta = useAppStore((state) => state.setTimeDelta);
   const timeBack = useAppStore((state) => state.timeBack);
   const setTimeBack = useAppStore((state) => state.setTimeBack);
+  const setSummary = useAppStore((state) => state.setSummary);
+  const setIndicators = useAppStore((state) => state.setIndicators);
+  const setMarketData = useAppStore((state) => state.setMarketData);
+  const symbols = useAppStore((state) => state.symbols);
+  const setSymbols = useAppStore((state) => state.setSymbols);
+  const setNewChart = useAppStore((state) => state.setNewChart);
+  const downloadStatus = useAppStore((state) => state.downloadStatus);
+  const setDownloadStatus = useAppStore((state) => state.setDownloadStatus);
+
+  const setHistBuyLabels = useAppStore((state) => state.setHistBuyLabels);
+  const setHistSellLabels = useAppStore((state) => state.setHistSellLabels);
+  const setHistHoldLabels = useAppStore((state) => state.setHistHoldLabels);
+  const setHistBuyData = useAppStore((state) => state.setHistBuyData);
+  const setHistSellData = useAppStore((state) => state.setHistSellData);
+  const setHistHoldData = useAppStore((state) => state.setHistHoldData);
+
+  const setLinearBuyLabels = useAppStore((state) => state.setLinearBuyLabels);
+  const setLinearSellLabels = useAppStore((state) => state.setLinearSellLabels);
+  const setLinearHoldLabels = useAppStore((state) => state.setLinearHoldLabels);
+  const setLinearBuyData = useAppStore((state) => state.setLinearBuyData);
+  const setLinearSellData = useAppStore((state) => state.setLinearSellData);
+  const setLinearHoldData = useAppStore((state) => state.setLinearHoldData);
+
+  const setHistSignalsRow1 = useAppStore((state) => state.setHistSignalsRow1);
+  const setHistSignalsRow2 = useAppStore((state) => state.setHistSignalsRow2);
+  const setHistSignalsRow3 = useAppStore((state) => state.setHistSignalsRow3);
+
+  const generateLabels = (n: number): number[] => {
+    return Array.from({ length: n }, (_, i) => i + 1);
+  };
+
+  const handleDownloadData = async (): Promise<void> => {
+    try {
+      setMarketData([]);
+      setNewChart(useAppStore.getState().newChart + 1);
+
+      const result = await downloadDataAPI(
+        actionType,
+        symbol,
+        timeFrame,
+        timeDelta,
+        timeBack,
+      );
+
+      const marketData = result.market_data.market_data.map((item) => ({
+        x: item.Datetime,
+        o: item.Open,
+        h: item.High,
+        l: item.Low,
+        c: item.Close,
+        y: item.Volume,
+      }));
+
+      setMarketData(marketData);
+      setNewChart(useAppStore.getState().newChart + 1);
+
+      setIndicators([
+        { name: "SMA", value: result.experts_signals.sma },
+        { name: "RSI", value: result.experts_signals.rsi },
+        { name: "BB", value: result.experts_signals.bb },
+        { name: "MACD", value: result.experts_signals.macd },
+        { name: "ADX", value: result.experts_signals.adx },
+        { name: "Volume", value: result.experts_signals.volume },
+      ]);
+
+      setSummary([
+        {
+          name: "Additive",
+          value: result.aggregation_signals.additive_method,
+        },
+        {
+          name: "Majority",
+          value: result.aggregation_signals.majority_method,
+        },
+        {
+          name: "Median",
+          value: result.aggregation_signals.median_method,
+        },
+      ]);
+
+      setHistBuyLabels(generateLabels(result.history_signals.period));
+      setHistSellLabels(generateLabels(result.history_signals.period));
+      setHistHoldLabels(generateLabels(result.history_signals.period));
+      setHistBuyData(result.history_signals.history.probabilities.buy);
+      setHistSellData(result.history_signals.history.probabilities.sell);
+      setHistHoldData(result.history_signals.history.probabilities.hold);
+
+      setLinearBuyLabels(generateLabels(result.history_signals.period));
+      setLinearSellLabels(generateLabels(result.history_signals.period));
+      setLinearHoldLabels(generateLabels(result.history_signals.period));
+      setLinearBuyData(result.history_signals.history.probabilities.buy);
+      setLinearSellData(result.history_signals.history.probabilities.sell);
+      setLinearHoldData(result.history_signals.history.probabilities.hold);
+
+      setHistSignalsRow1(result.history_signals.history.additive.decisions);
+      setHistSignalsRow2(result.history_signals.history.majority.decisions);
+      setHistSignalsRow3(result.history_signals.history.median.decisions);
+
+      setDownloadStatus("success");
+
+      setTimeout(() => {
+        setDownloadStatus("idle");
+      }, 1500);
+    } catch {
+      setDownloadStatus("error");
+
+      setTimeout(() => {
+        setDownloadStatus("idle");
+      }, 1500);
+    }
+  };
 
   return (
     <div className="min-h-full flex flex-col justify-center">
@@ -24,7 +136,17 @@ const DownloadData = (): JSX.Element => {
             name="radio_stock"
             aria-label="Forex"
             checked={actionType === "Forex"}
-            onChange={() => setActionType("Forex")}
+            onChange={() => {
+              setActionType("Forex");
+              setSymbols([
+                "EUR-USD",
+                "GBP-USD",
+                "USD-JPY",
+                "USD-CHF",
+                "AUD-USD",
+              ]);
+              setSymbol("EUR-USD");
+            }}
           />
           <input
             className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
@@ -32,7 +154,11 @@ const DownloadData = (): JSX.Element => {
             name="radio_stock"
             aria-label="Stock"
             checked={actionType === "Stock"}
-            onChange={() => setActionType("Stock")}
+            onChange={() => {
+              setActionType("Stock");
+              setSymbols(["NVDA", "AAPL", "MSFT", "AMZN", "TSLA"]);
+              setSymbol("NVDA");
+            }}
           />
           <input
             className="join-item btn flex-1 text-sm sm:text-xl border-r border-base-300"
@@ -40,7 +166,11 @@ const DownloadData = (): JSX.Element => {
             name="radio_stock"
             aria-label="ETF"
             checked={actionType === "ETF"}
-            onChange={() => setActionType("ETF")}
+            onChange={() => {
+              setActionType("ETF");
+              setSymbols(["SPY", "QQQ", "VTI", "ARKK", "GLD"]);
+              setSymbol("SPY");
+            }}
           />
         </div>
       </div>
@@ -58,10 +188,18 @@ const DownloadData = (): JSX.Element => {
             value={symbol}
             onChange={(e) => setSymbol(e.target.value)}
           >
+<<<<<<< HEAD
             <option className="font-bold">NVDA</option>
             <option className="font-bold">AMD</option>
             <option className="font-bold">INTC</option>
             <option className="font-bold">BTC-USD</option>
+=======
+            {symbols.map((s) => (
+              <option key={s} className="font-bold">
+                {s}
+              </option>
+            ))}
+>>>>>>> develop
           </select>
         </div>
 
@@ -76,9 +214,15 @@ const DownloadData = (): JSX.Element => {
             value={timeFrame}
             onChange={(e) => setTimeFrame(e.target.value)}
           >
-            <option className="font-bold">1 M</option>
-            <option className="font-bold">1 H</option>
-            <option className="font-bold">1 D</option>
+            <option className="font-bold">1 m</option>
+            <option className="font-bold">2 m</option>
+            <option className="font-bold">5 m</option>
+            <option className="font-bold">15 m</option>
+            <option className="font-bold">30 m</option>
+            <option className="font-bold">1 h</option>
+            <option className="font-bold">4 h</option>
+            <option className="font-bold">1 d</option>
+            <option className="font-bold">5 d</option>
           </select>
         </div>
       </div>
@@ -137,14 +281,29 @@ const DownloadData = (): JSX.Element => {
       {/* BUTTON */}
       <div className="flex justify-center">
         <button
-          className="flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3 items-center justify-center
-                      transition-all duration-200 
-                      active:scale-95 font-medium
-                      bg-primary text-primary-content hover:bg-secondary/50
-                      text-align-center shadow-xl
-                      text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer"
+          onClick={handleDownloadData}
+          className={`
+    flex w-2/5 h-14 sm:h-14 md:h-16 lg:h-18 rounded-2xl mt-5 mb-3
+    items-center justify-center
+    transition-all duration-200
+    active:scale-95 font-medium
+    text-align-center shadow-xl
+    text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer
+
+    ${
+      downloadStatus === "success"
+        ? "bg-success text-white"
+        : downloadStatus === "error"
+          ? "bg-error text-white"
+          : "bg-primary text-primary-content hover:bg-secondary/50"
+    }
+  `}
         >
-          Download Data
+          {downloadStatus === "success"
+            ? "Downloaded!"
+            : downloadStatus === "error"
+              ? "Download Error"
+              : "Download Data"}
         </button>
       </div>
     </div>
