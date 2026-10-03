@@ -15,6 +15,20 @@ type AppState = {
   symbols: string[];
   newChart: number;
   downloadStatus: string;
+
+  histBuyLabels: number[];
+  histSellLabels: number[];
+  histHoldLabels: number[];
+  histBuyData: number[];
+  histSellData: number[];
+  histHoldData: number[];
+
+  linearBuyLabels: number[];
+  linearSellLabels: number[];
+  linearHoldLabels: number[];
+  linearBuyData: number[];
+  linearSellData: number[];
+  linearHoldData: number[];
 };
 
 type AppStore = AppState & {
@@ -31,6 +45,20 @@ type AppStore = AppState & {
   setSymbols: (symbols: string[]) => void;
   setNewChart: (value: number) => void;
   setDownloadStatus: (value: string) => void;
+
+  setHistBuyLabels: (data: number[]) => void;
+  setHistSellLabels: (data: number[]) => void;
+  setHistHoldLabels: (data: number[]) => void;
+  setHistBuyData: (data: number[]) => void;
+  setHistSellData: (data: number[]) => void;
+  setHistHoldData: (data: number[]) => void;
+
+  setLinearBuyLabels: (data: number[]) => void;
+  setLinearSellLabels: (data: number[]) => void;
+  setLinearHoldLabels: (data: number[]) => void;
+  setLinearBuyData: (data: number[]) => void;
+  setLinearSellData: (data: number[]) => void;
+  setLinearHoldData: (data: number[]) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -64,6 +92,20 @@ export const useAppStore = create<AppStore>((set) => ({
   marketData: [],
   symbols: ["EUR-USD", "GBP-USD", "USD-JPY", "USD-CHF", "AUD-USD"],
 
+  histBuyLabels: [],
+  histSellLabels: [],
+  histHoldLabels: [],
+  histBuyData: [],
+  histSellData: [],
+  histHoldData: [],
+
+  linearBuyLabels: [],
+  linearSellLabels: [],
+  linearHoldLabels: [],
+  linearBuyData: [],
+  linearSellData: [],
+  linearHoldData: [],
+
   setTheme: (theme: string) => set({ theme }),
   setActionType: (type: "Forex" | "Stock" | "ETF") => set({ actionType: type }),
   setSymbol: (symbol: string) => set({ symbol }),
@@ -77,4 +119,18 @@ export const useAppStore = create<AppStore>((set) => ({
   setSymbols: (symbols: string[]) => set({ symbols }),
   setNewChart: (value) => set({ newChart: value }),
   setDownloadStatus: (value) => set({ downloadStatus: value }),
+
+  setHistBuyLabels: (data) => set({ histBuyLabels: data }),
+  setHistSellLabels: (data) => set({ histSellLabels: data }),
+  setHistHoldLabels: (data) => set({ histHoldLabels: data }),
+  setHistBuyData: (data) => set({ histBuyData: data }),
+  setHistSellData: (data) => set({ histSellData: data }),
+  setHistHoldData: (data) => set({ histHoldData: data }),
+
+  setLinearBuyLabels: (data) => set({ linearBuyLabels: data }),
+  setLinearSellLabels: (data) => set({ linearSellLabels: data }),
+  setLinearHoldLabels: (data) => set({ linearHoldLabels: data }),
+  setLinearBuyData: (data) => set({ linearBuyData: data }),
+  setLinearSellData: (data) => set({ linearSellData: data }),
+  setLinearHoldData: (data) => set({ linearHoldData: data }),
 }));

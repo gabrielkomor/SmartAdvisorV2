@@ -22,6 +22,24 @@ const DownloadData = (): JSX.Element => {
   const downloadStatus = useAppStore((state) => state.downloadStatus);
   const setDownloadStatus = useAppStore((state) => state.setDownloadStatus);
 
+  const setHistBuyLabels = useAppStore((state) => state.setHistBuyLabels);
+  const setHistSellLabels = useAppStore((state) => state.setHistSellLabels);
+  const setHistHoldLabels = useAppStore((state) => state.setHistHoldLabels);
+  const setHistBuyData = useAppStore((state) => state.setHistBuyData);
+  const setHistSellData = useAppStore((state) => state.setHistSellData);
+  const setHistHoldData = useAppStore((state) => state.setHistHoldData);
+
+  const setLinearBuyLabels = useAppStore((state) => state.setLinearBuyLabels);
+  const setLinearSellLabels = useAppStore((state) => state.setLinearSellLabels);
+  const setLinearHoldLabels = useAppStore((state) => state.setLinearHoldLabels);
+  const setLinearBuyData = useAppStore((state) => state.setLinearBuyData);
+  const setLinearSellData = useAppStore((state) => state.setLinearSellData);
+  const setLinearHoldData = useAppStore((state) => state.setLinearHoldData);
+
+  const generateLabels = (n: number): number[] => {
+    return Array.from({ length: n }, (_, i) => i + 1);
+  };
+
   const handleDownloadData = async (): Promise<void> => {
     try {
       setMarketData([]);
@@ -70,6 +88,20 @@ const DownloadData = (): JSX.Element => {
           value: result.aggregation_signals.median_method,
         },
       ]);
+
+      setHistBuyLabels(generateLabels(result.history_signals.period));
+      setHistSellLabels(generateLabels(result.history_signals.period));
+      setHistHoldLabels(generateLabels(result.history_signals.period));
+      setHistBuyData(result.history_signals.history.probabilities.buy);
+      setHistSellData(result.history_signals.history.probabilities.sell);
+      setHistHoldData(result.history_signals.history.probabilities.hold);
+
+      setLinearBuyLabels(generateLabels(result.history_signals.period));
+      setLinearSellLabels(generateLabels(result.history_signals.period));
+      setLinearHoldLabels(generateLabels(result.history_signals.period));
+      setLinearBuyData(result.history_signals.history.probabilities.buy);
+      setLinearSellData(result.history_signals.history.probabilities.sell);
+      setLinearHoldData(result.history_signals.history.probabilities.hold);
 
       setDownloadStatus("success");
 

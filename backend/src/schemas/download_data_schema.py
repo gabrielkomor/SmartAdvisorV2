@@ -25,3 +25,4 @@ class DownloadDataResposne(BaseModel):
     market_data: dict
     aggregation_signals: dict
     experts_signals: dict
+    history_signals: dict

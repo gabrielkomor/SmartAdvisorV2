@@ -2,7 +2,6 @@
 This file is responsible for downloading stock market data using the yfinance library.
 """
 
-import threading
 from datetime import datetime, timedelta
 
 import yfinance as yf
@@ -16,24 +15,6 @@ FOREX_SYMBOL_MAP = {
     "USD-CHF": "USDCHF=X",
     "AUD-USD": "AUDUSD=X",
 }
-
-
-def websocket_worker(symbol: str) -> None:
-    """_summary_
-
-    :param symbol: _description_
-    :type symbol: str
-    """
-    with yf.WebSocket(verbose=False) as ws:
-        ws.subscribe([symbol])
-        ws.listen()
-
-
-def start_live_data_download() -> None:
-    """_summary_"""
-    thread = threading.Thread(target=websocket_worker, daemon=True)
-
-    thread.start()
 
 
 def normalize_yfinance_symbol(symbol: str, asset_type: str) -> str:

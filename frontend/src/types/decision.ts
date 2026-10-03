@@ -34,3 +34,21 @@ export type MarketDataRe = {
   Close: number;
   Volume: number;
 };
+
+export type SignalTriple = {
+  buy: number[];
+  hold: number[];
+  sell: number[];
+};
+
+export type HistorySignal = {
+  probabilities: SignalTriple;
+  additive: SignalTriple;
+  majority: SignalTriple;
+  median: SignalTriple;
+};
+
+export type HistorySignalsResponse = {
+  period: number;
+  history: HistorySignal;
+};
